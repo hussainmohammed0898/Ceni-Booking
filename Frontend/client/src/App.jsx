@@ -1,8 +1,19 @@
 import React from 'react'
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import { routes } from './route/Routes';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
+  const route = createBrowserRouter(routes);
+
   return (
-    <div className='text-red-500'>App</div>
+    <>
+    <RouterProvider router={route} />
+    <Toaster position="bottom-center" duration={500} />
+    </>
   )
 }
 
