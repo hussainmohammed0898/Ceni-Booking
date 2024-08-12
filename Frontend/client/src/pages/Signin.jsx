@@ -48,10 +48,10 @@ const onSubmit = async (data) => {
         type="email" 
         placeholder='Email'
         {...register("email")} 
-        className='mb-6 w-full px-4 py-2 text-xl text-gray-300  bg-slate-900 input input-bordered input-primary w-100  rounded ' 
+        className='mb-2 w-full px-4 py-2 text-xl text-gray-300  bg-slate-900 input input-bordered input-primary w-100  rounded ' 
         />
         {errors.email && (
-          <span className="text-error block text-sm  mt-1 ml-2">
+          <span className="text-error block text-sm  mb-4 ml-2">
              {errors.email.message}
                </span>
          )}
@@ -60,7 +60,7 @@ const onSubmit = async (data) => {
         type={showPassword ? "text" : "password"} 
         placeholder='Password'
         {...register("password")} 
-        className='mb-6 w-full px-4 py-2 text-xl  text-gray-300   bg-slate-900 input input-bordered input-primary w-100 rounded ' 
+        className='mb-2 w-full px-4 py-2 text-xl  text-gray-300   bg-slate-900 input input-bordered input-primary w-100 rounded ' 
         />
          {showPassword ? (
           <FaEyeSlash className='absolute right-3 top-3 text-xl cursor-pointer' onClick={()=>setShowPassword((prevState)=>!prevState)}/>
@@ -70,7 +70,7 @@ const onSubmit = async (data) => {
         ((prevState)=>!prevState)}/>)}
         </div>
         {errors.password && (
-          <span className="text-error block text-sm mt-1 ml-2">
+          <span className="text-error block text-sm mb-4 ml-2">
              {errors.password.message}
                 </span>
           )}

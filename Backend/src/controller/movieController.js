@@ -35,7 +35,7 @@ export const addMovies = async(req, res)=>{
                 language,
                 actorName,
                 director,
-                posterUrl : imageUrl,
+                image : imageUrl,
             });
             await newMovie.save();
             
@@ -60,6 +60,39 @@ export const Movies = async (req, res) => {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
   }
 };
+
+export const MovieDetails = async (req, res) => {
+  const id = req.params.id;
+  try {
+      const movie = await Movie.findById(id);
+      if (!movie) {
+          return res.status(StatusCodes.NOT_FOUND).json({ message: "Movie not found" });
+      }
+      const movieDetails = await Movie.findById(id).populate({
+          path: 'reviews',
+          populate: {
+              path: 'userId',
+              select: 'name'
+          }
+      });
+      res.status(200).json(movieDetails);
+  }
+  catch (error) {
+      console.log("Error in movie details controller", error.message);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal Server Error" });
+  }
+}
+
+export  const selectMovie = async (req, res) => {
+  try {
+    const movies = await Movie.find().select('title').select('releaseDate');
+    res.status(200).json(movies);
+  } catch (error) {
+    console.error("Error fetching movies", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 
 
 export const deleteMovieById = async (req, res) => {

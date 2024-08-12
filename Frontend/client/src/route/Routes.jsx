@@ -8,6 +8,8 @@ import ResetPassword from "../components/forgotPassword/ResetPassword";
 import UserRoute from "../protectRoute/UserRoute";
 import AuthRoute from "../protectRoute/AuthRoute";
 import UserLayout from "../layout/UserLayout";
+import MovieDetails from "../pages/MovieDetails";
+import ShowReview from "../pages/ShowReview";
 
 export const routes = [{
     element: <HomeLayout/>,
@@ -48,5 +50,10 @@ export const routes = [{
                 path: "/userHome",
                 element:<UserRoute><Movies/></UserRoute>
             },
+            {
+                path: "/movie/:id",
+                element: <UserRoute><MovieDetails /></UserRoute>
+            },
+            
         ]
 }]

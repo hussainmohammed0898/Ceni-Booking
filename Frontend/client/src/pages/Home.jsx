@@ -15,7 +15,7 @@ function Home() {
         <p className="mb-3 text-white text-sm sm:text-lg">
         SAFE,  SECURE, RELIABLE TICKETING. YOUR TICKET IS TO LIVE ENTERTAINMENT!
         </p>
-        <Link to={'/login'}>
+        <Link to={'/userHome'}>
         <button className="btn bg-yellow-500 text-gray-800 font-bold text-lg hover:bg-yellow-600">Book Now</button></Link>
       </div>
     </div>
