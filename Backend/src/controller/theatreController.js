@@ -25,3 +25,80 @@ export const AddTheater = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
     }
 };
+
+export const approveTheater = async (req, res) => {
+    try {
+        const theaterId = req.params.id;
+        const theater = await Theater.findByIdAndUpdate(theaterId, { approved: true });
+        await theater.save();
+        res.status(StatusCodes.OK).json({ message: "Theatre approved successfully" });
+    }
+    catch (error) {
+        console.log("Error in approve theater controller", error.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+    }
+};
+
+export const notApprovedTheaters = async (req, res) => { 
+    try {
+        const theaters = await Theater.find({approved : false}).populate('owner', 'name');
+        res.status(StatusCodes.OK).json(theaters);
+    }
+    catch (error) {
+        console.log("Error in theaters controller", error.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+    }
+};
+
+export const getApprovedTheaters = async (req, res) => {
+    try {
+        const theaters = await Theater.find({ approved: true }).populate('owner', 'name');
+        res.status(StatusCodes.OK).json(theaters);
+    }
+    catch (error) {
+        console.log("Error in theaters controller", error.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+    }
+
+};
+
+export const totalTheaters = async (req, res) => {
+    try {
+        const approved = await Theater.find({ approved: true });
+        const pending = await Theater.find({ approved: false });
+
+        res.status(StatusCodes.OK).json({ approvedTheater: approved.length, pendingTheater: pending.length });
+    } catch (error) {
+        console.error('Error fetching total theaters:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+    }
+}
+
+export const selectTheater = async (req, res) => { 
+    try {
+        const ownerId = req.owner.ownerId;
+        const theaters = await Theater.find( { owner : ownerId ,approved: true }).select('name').select('location');
+        res.status(StatusCodes.OK).json(theaters);
+    } catch (error) {
+        console.error("Error fetching theaters", error.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+    }
+}
+
+export const TheaterByOwner = async (req, res) => {
+    const ownerId = req.owner.ownerId;
+    try {
+        const theaters = await Theater.find({ owner: ownerId });
+        if (theaters.length === 0) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "No theaters found for this owner" });
+        }
+        res.status(StatusCodes.OK).json(theaters);
+        
+    } catch (error) {
+        console.log("Error in get theaters controller", error.message);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+    }
+}
+
+
+  

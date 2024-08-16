@@ -1,8 +1,10 @@
 import Owner from "../models/ownerModel.js";
 import { StatusCodes } from "http-status-codes";
 import bcrypt from "bcrypt";
+import nodemailer from 'nodemailer';
 import { adminGenerateToken } from "../utilities/generalToken.js";
-
+import serverConfig from "../config/serverConfig.js";
+import jwt from 'jsonwebtoken';
 
 
 export const addOwner = async (req, res)=>{
@@ -24,7 +26,7 @@ export const addOwner = async (req, res)=>{
 
     const OwnerExist = await Owner.findOne({email});
     if(OwnerExist){
-        return res.status(StatusCodes.NOT_ACCEPTABLE).json({message:"user already exist"});
+        return res.status(StatusCodes.NOT_ACCEPTABLE).json({message:"owner already exist"});
     };
 
     const saltRound = 10;
@@ -34,7 +36,7 @@ export const addOwner = async (req, res)=>{
         name,
         email,
         password:hashPassword,
-        role: 'owner'
+        role: 'admin'
     });
 
     const newOwnerCreated = newOwner.save();
@@ -97,6 +99,82 @@ export const ownerLogout = (req, res)=>{
   } 
 };
 
+export const forgotPassword =async (req, res)=>{
+  try {
+  
+   
+   const {email} = req.body;
+   if (!email) {
+     return res.status(StatusCodes.BAD_REQUEST).json({ message: 'Email is required' });
+   }
+   const owner =await Owner.findOne({email});
+   if(!owner){
+     return res.status(StatusCodes.NOT_FOUND).json({message:'owner not found'});
+   };
+ 
+   const token = adminGenerateToken(owner);
+   var transporter = nodemailer.createTransport({
+       service: serverConfig.service,
+       auth: {
+         user: serverConfig.email,
+         pass: serverConfig.password
+       }
+     });
+     
+     var mailOptions = {
+       from: serverConfig.email,
+       to: owner.email,
+       subject: 'Reset Password Link',
+       text: `http://localhost:5173/reset-password/${owner._id}/${token}`
+     };
+     transporter.sendMail(mailOptions, function(error, info){
+       if (error) {
+         console.log(error);
+       } else {
+         return res.status(StatusCodes.OK).json({Status: "Success"})
+       }
+     });
+     
+    
+  } catch (error) {
+   res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Server error' });
+   
+  }
+         
+ };
+
+ export const resetPassword = async (req, res)=>{
+  console.log("hitting");
+  
+  const {id, token} = req.params
+  const{newPassword} = req.body;
+  console.log("Received ID:", id);
+  console.log("Received token:", token);
+  console.log("Received newPassword:", newPassword);
+  try {
+    const decoded = jwt.verify(token, serverConfig.adminToken);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+    const owner = await Owner.findByIdAndUpdate(id, { password: hashedPassword });
+    
+    if (owner) {
+      return res.status(StatusCodes.CREATED).json({ message: "Password reset is successfully completed" });
+    } else {
+      return res.status(StatusCodes.NOT_MODIFIED).json({ message: 'Failed to create new password' });
+    }
+  
+    
+  } catch (error) {
+    if (error.name === 'TokenExpiredError' || error.name === 'JsonWebTokenError') {
+      return res.sendStatus(StatusCodes.FORBIDDEN);
+    }
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
+  }
+  
+};
+
+
+
 export const checkOwner = async (req, res) => {
   const owner = req.owner;
 try {
@@ -119,8 +197,11 @@ try {
 
 export const checkAdmin = async (req, res) => { 
   const owner = req.owner;
+  console.log("owner:", owner);
+  
 try {
-  const adminData = await Owner.findOne({ _id: owner.ownerId });
+  const adminData = await Owner.findOne({ _id: owner.data });
+  console.log(adminData);
   if (!adminData) {
     return res.status(StatusCodes.NOT_FOUND).json({ message: "owner not found", success: false });
   }

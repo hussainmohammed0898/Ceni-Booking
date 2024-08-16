@@ -207,6 +207,17 @@ export const getUser = async (req, res) => {
   }
 };
 
+export const  totalUser = async (req, res) => {
+
+  try {
+      const user = await User.find();
+      res.status(StatusCodes.CREATED).json({ totalUser: user.length });  
+  } catch (error) {
+      console.error('Error fetching total user:', error);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+  }
+};
+
 export const google = async (req, res)=>{
   const {name, email} = req.user;
 

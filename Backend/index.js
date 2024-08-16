@@ -6,6 +6,7 @@ import ownerRoute from './src/routes/ownerRoutes.js';
 import cookieParser from 'cookie-parser';
 import adminRouter from './src/routes/adminRoutes.js';
 import cors from 'cors';
+import { StatusCodes } from 'http-status-codes';
 
 
 
@@ -23,6 +24,9 @@ app.use(cors({
 app.use("/api/user", userRouter);
 app.use("/api/owner", ownerRoute);
 app.use("/api/admin",adminRouter);
+app.all("*", (req, res)=>{
+  res.status(StatusCodes.NOT_FOUND).json({message:"End point does not found"})
+})
 
 
 

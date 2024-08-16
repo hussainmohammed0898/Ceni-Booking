@@ -30,6 +30,10 @@ const TheaterSchema = new mongoose.Schema({
       required: true
   },
    seatingPattern: [[SeatSchema]],
+   approved: {
+    type: Boolean,
+    default: false
+},
    price: {
     type: Number,
     required: true,
