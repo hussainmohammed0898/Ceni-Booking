@@ -208,7 +208,6 @@ export const getUser = async (req, res) => {
 };
 
 export const  totalUser = async (req, res) => {
-
   try {
       const user = await User.find();
       res.status(StatusCodes.CREATED).json({ totalUser: user.length });  

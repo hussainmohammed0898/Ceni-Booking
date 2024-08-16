@@ -5,8 +5,8 @@ import { StatusCodes } from "http-status-codes";
 
 function authenticateOwner(req, res, next) {
   const token = req.cookies.access_token;
-
-  jwt.verify(token, serverConfig.ownerToken, (err, owner) => {
+  
+  jwt.verify(token, serverConfig.adminToken, (err, owner) => {
 
     if (err) return res.sendStatus(StatusCodes.FORBIDDEN);
 

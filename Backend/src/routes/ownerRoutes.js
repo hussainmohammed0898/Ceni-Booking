@@ -1,7 +1,7 @@
 import express from 'express';
 import { addOwner, checkOwner, forgotPassword, ownerLogin, ownerLogout, resetPassword } from '../controller/ownerController.js';
 import authenticateOwner from '../middleware/ownerMiddleware.js';
-import { Movies, selectMovie, totalMovies } from '../controller/movieController.js';
+import { allMovies,  selectMovie, totalMovies } from '../controller/movieController.js';
 import { AddTheater, selectTheater, TheaterByOwner } from '../controller/theatreController.js';
 import { addShow, getShowByOwner } from '../controller/showController.js';
 const ownerRoute = express.Router();
@@ -17,7 +17,7 @@ ownerRoute.get('/select-movie', authenticateOwner,selectMovie);
 ownerRoute.get('/select-theater',authenticateOwner,selectTheater)
 ownerRoute.get('/check-owner',authenticateOwner,checkOwner);
 ownerRoute.get('/get-shows', authenticateOwner,getShowByOwner)
-ownerRoute.get('/all-movies',authenticateOwner,Movies);
+ownerRoute.get('/all-movies',authenticateOwner,allMovies);
 ownerRoute.get('/total-movies',authenticateOwner,totalMovies);
 ownerRoute.get('/my-theaters', authenticateOwner, TheaterByOwner)
 

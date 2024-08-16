@@ -49,14 +49,14 @@ function Movies() {
     const isMobile = window.innerWidth <= 640;
   
   return (
-    <div className='container min-h-screen h-full pt-20  mx-auto'>
-       <div className="carousel carousel-center bg-neutral rounded-box  space-x-5 p-4 mb-6">
+    <div className='container min-h-screen h-full pt-20 mx-auto'>
+       <div className="carousel carousel-center bg-neutral rounded-box space-x-5 p-4 mb-6 hidden md:inline-flex">
   {loading ? renderSkeletons(nowPlayingDisplayCount) : nowPlayingMovies.slice(0, isMobile ? nowPlayingMovies.length : nowPlayingDisplayCount).map((movie, index) => (
      <Link key={index} to={`/movie/${movie._id}`}>
      <figure>
     
-     <div className="carousel-item  card w-64">
-       <img src={movie.image} alt={movie.title} className="rounded-box" />
+     <div className="carousel-item  card w-80">
+       <img src={movie.image} alt={movie.title} className="rounded-box max-h-96" />
      </div>
      </figure>
      </Link>
@@ -102,7 +102,7 @@ function Movies() {
         <div className="flex justify-center">
           <div className="flex gap-4 overflow-x-auto flex-nowrap p-4 animate-fade-in sm:grid sm:grid-cols-2 lg:grid-cols-4">
             {loading ? renderSkeletons(upcomingDisplayCount) : upcomingMovies.slice(0, isMobile ? upcomingMovies.length : upcomingDisplayCount).map((movie, index) => (
-              <Link key={index} to={`/movie/${movie._id}`} className="card w-72 bg-base-200 flex-shrink-0">
+              <Link key={index} to={`/movie/${movie._id}`} className="card w-52 bg-base-200 flex-shrink-0">
                 <figure>
                   <img src={movie.image} alt={movie.title} className="w-full h-72 object-fill" />
                 </figure>

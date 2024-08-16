@@ -36,7 +36,7 @@ export const addOwner = async (req, res)=>{
         name,
         email,
         password:hashPassword,
-        role: 'admin'
+        role: 'owner'
     });
 
     const newOwnerCreated = newOwner.save();
@@ -74,6 +74,7 @@ export const ownerLogin =async(req, res)=>{
 
     const token = adminGenerateToken(ownerExist);
     console.log(token);
+    
    
     res.cookie('access_token',token,{httpOnly:true})
     res.status(StatusCodes.ACCEPTED).json({message:"login successfully completed", role:ownerExist.role});  
@@ -176,9 +177,13 @@ export const forgotPassword =async (req, res)=>{
 
 
 export const checkOwner = async (req, res) => {
+  console.log("hitting");
+  
   const owner = req.owner;
+  console.log(owner);
+  
 try {
-  const ownerData = await Owner.findOne({ _id: owner.ownerId });
+  const ownerData = await Owner.findOne({ _id: owner.data });
   if (!ownerData) {
     return res.status(StatusCodes.NOT_FOUND).json({ message: "owner not found", success: false });
   }

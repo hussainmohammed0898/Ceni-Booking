@@ -1,6 +1,6 @@
 import express from 'express'
 import upload from '../middleware/uploadMiddleware.js';
-import { addMovies, deleteMovieById, Movies, totalMovies } from '../controller/movieController.js';
+import { addMovies, allMovies, deleteMovieById,  totalMovies } from '../controller/movieController.js';
 import authenticateAdmin from '../middleware/adminMiddleware.js';
 import { checkAdmin } from '../controller/ownerController.js';
 import { approveTheater, getApprovedTheaters, notApprovedTheaters, totalTheaters } from '../controller/theatreController.js';
@@ -13,7 +13,7 @@ const adminRouter = express.Router();
 
 
 adminRouter.post("/add-movies", upload.single('image'),addMovies);
-adminRouter.get('/all-movies',authenticateAdmin,Movies);
+adminRouter.get('/all-movies',authenticateAdmin,allMovies);
 adminRouter.delete('/delete-movie/:id',authenticateAdmin, deleteMovieById);
 adminRouter.put('/approve-theaters/:id', authenticateAdmin, approveTheater);
 adminRouter.get('/not-approved-theaters',authenticateAdmin,notApprovedTheaters)

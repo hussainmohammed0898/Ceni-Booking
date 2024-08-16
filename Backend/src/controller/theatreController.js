@@ -2,7 +2,8 @@ import { StatusCodes } from "http-status-codes";
 import Theater from "../models/theaterModel.js";
 
 export const AddTheater = async (req, res) => {
-    const ownerId = req.owner.ownerId;
+    const ownerId = req.owner.data;
+    console.log("res", ownerId);
     try {
         const { name, location,selectedSeats} = req.body;
         if (!name || !location || !ownerId || !selectedSeats) {
@@ -76,7 +77,7 @@ export const totalTheaters = async (req, res) => {
 
 export const selectTheater = async (req, res) => { 
     try {
-        const ownerId = req.owner.ownerId;
+        const ownerId = req.owner.data;
         const theaters = await Theater.find( { owner : ownerId ,approved: true }).select('name').select('location');
         res.status(StatusCodes.OK).json(theaters);
     } catch (error) {
@@ -86,7 +87,7 @@ export const selectTheater = async (req, res) => {
 }
 
 export const TheaterByOwner = async (req, res) => {
-    const ownerId = req.owner.ownerId;
+    const ownerId = req.owner.data;
     try {
         const theaters = await Theater.find({ owner: ownerId });
         if (theaters.length === 0) {
