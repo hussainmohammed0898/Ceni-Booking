@@ -3,7 +3,6 @@ import Theater from "../models/theaterModel.js";
 
 export const AddTheater = async (req, res) => {
     const ownerId = req.owner.data;
-    console.log("res", ownerId);
     try {
         const { name, location,selectedSeats} = req.body;
         if (!name || !location || !ownerId || !selectedSeats) {
@@ -28,10 +27,19 @@ export const AddTheater = async (req, res) => {
 };
 
 export const approveTheater = async (req, res) => {
+    console.log("hitting");
+    
     try {
         const theaterId = req.params.id;
-        const theater = await Theater.findByIdAndUpdate(theaterId, { approved: true });
-        await theater.save();
+        console.log("id:",theaterId);
+
+        const theater = await Theater.findByIdAndUpdate(theaterId, { approved: true }, { new: true });
+        
+        if (!theater) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: "Theater not found" });
+        }
+
+        
         res.status(StatusCodes.OK).json({ message: "Theatre approved successfully" });
     }
     catch (error) {
@@ -42,6 +50,7 @@ export const approveTheater = async (req, res) => {
 
 export const notApprovedTheaters = async (req, res) => { 
     try {
+        
         const theaters = await Theater.find({approved : false}).populate('owner', 'name');
         res.status(StatusCodes.OK).json(theaters);
     }
@@ -100,6 +109,8 @@ export const TheaterByOwner = async (req, res) => {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
     }
 }
+
+
 
 
   

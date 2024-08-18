@@ -60,27 +60,24 @@ export default function MoviesList() {
   };
 
   return (
-    <div className="container mx-5">
-      <div className="card w-full p-6 bg-base-200 shadow-xl mt-6 animate-fade-in-down">
-        <div className="card-title flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Movies</h2>
-          <button className="btn btn-success text-primary-content w-32" onClick={() => handleOpenModal()}>Add</button>
-        </div>
-        <div className="divider mt-2"></div>
-        <div className="h-full min-h-screen overflow-x-auto bg-base-200 rounded-xl">
-          <table className="table">
-            <thead className='text-lg'>
-              <tr>
-                <th>Title</th>
-                <th>Genre</th>
-                <th>Release Date</th>
-                <th>Language</th>
-                <th>Duration (Min)</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {movies.map((movie) => (
+    <div className="overflow-x-auto h-screen">
+    <div className="card-title flex items-center justify-between mt-4 mb-4 mx-2">
+            <h2 className="text-xl font-semibold">Movies</h2>
+            <button className="btn btn-success text-primary-content w-32" onClick={() => handleOpenModal()}>Add</button>
+        </div>  
+<table className="table">
+<thead>
+  <tr>
+    <th>Title</th>
+    <th>Genre</th>
+    <th>Release Date</th>
+    <th>Language</th>
+    <th>Duration</th>
+  </tr>
+</thead>
+<tbody>
+
+{movies.map((movie) => (
                 <tr key={movie._id} className='border-t border-base-100'>
                   <td>
                     <div className="flex items-center gap-3">
@@ -94,7 +91,9 @@ export default function MoviesList() {
                       </div>
                     </div>
                   </td>
-                  <td>{movie.genre}</td>
+                  <td >
+                    {movie.genre}
+                  </td>
                   <td>{format(new Date(movie.releaseDate), 'dd MMMM yyyy')}</td>
                   <td>{movie.language}</td>
                   <td>{movie.duration} mins</td>
@@ -105,11 +104,8 @@ export default function MoviesList() {
                   </td>
                 </tr>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
+</tbody>
+</table>
       <Modal
         isOpen={deleteMovieId !== null}
         onProceed={confirmDelete}

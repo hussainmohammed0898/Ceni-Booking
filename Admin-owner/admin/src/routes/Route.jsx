@@ -1,5 +1,7 @@
 import AdminDashboard from "../component/admin/AdminDashboard";
+import ApproveTheater from "../component/admin/ApproveTheater";
 import MoviesList from "../component/admin/MoviesList";
+import PendingTheater from "../component/admin/PendingTheater";
 import Login from "../component/auth/Login";
 import Signup from "../component/auth/Signup";
 import ForgotPassword from "../component/forgotpassword/ForgotPassword";
@@ -8,6 +10,7 @@ import AddTheater from "../component/owner/AddTheater";
 import MytheaterList from "../component/owner/MytheaterList";
 import OwnerDashboard from "../component/owner/OwnerDashboard";
 import OwnerMovieList from "../component/owner/OwnerMovieList";
+import ShowList from "../component/owner/Showlist";
 import AdminLayout from "../layout/AdminLayout";
 import HomeLayout from "../layout/HomeLayout";
 import OwnerLayout from "../layout/OwnerLayout";
@@ -52,6 +55,14 @@ export const routes = [
             {
                 path:'/movies',
                 element:<AdminRoutes><MoviesList/></AdminRoutes>
+            },
+            {
+                path:'/theater/pending-approval',
+                element:<AdminRoutes><PendingTheater/></AdminRoutes>
+            },
+            {
+                path:"/theaters/approved",
+                element:<AdminRoutes><ApproveTheater></ApproveTheater></AdminRoutes>
             }
         ]
     },
@@ -73,6 +84,10 @@ export const routes = [
             {
                 path:"/theaters/my-theaters",
                 element:<OwnerRoutes><MytheaterList/></OwnerRoutes>
+            },
+            {
+                path: '/shows',
+                element:<OwnerRoutes><ShowList/></OwnerRoutes>
             }
         ]
     }

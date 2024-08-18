@@ -13,6 +13,8 @@ export const generateToken = (user)=>{
 
 export const adminGenerateToken = (owner)=>{
   const token = jwt.sign({ data:owner._id, role:owner.role},serverConfig.adminToken,{expiresIn: "1d"});
+  console.log("token:",token);
+  
   return token;
 };
 

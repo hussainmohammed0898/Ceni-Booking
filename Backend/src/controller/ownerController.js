@@ -200,9 +200,9 @@ try {
 };
 
 
-export const checkAdmin = async (req, res) => { 
+export const checkAdmin = async (req, res) => {   
   const owner = req.owner;
-  console.log("owner:", owner);
+
   
 try {
   const adminData = await Owner.findOne({ _id: owner.data });

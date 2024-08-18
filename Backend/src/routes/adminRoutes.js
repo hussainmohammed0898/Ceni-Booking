@@ -25,4 +25,5 @@ adminRouter.get('/total-movies',authenticateAdmin,totalMovies);
 adminRouter.get('/total-users',authenticateAdmin,totalUser);
 
 
+
 export default adminRouter;
