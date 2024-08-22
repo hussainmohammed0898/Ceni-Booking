@@ -16,6 +16,9 @@ export default function Show() {
       try {
         const formattedDate = selectedDate.toISOString().split('T')[0];
         const response = await axios.get(`http://localhost:3000/api/user/show?date=${formattedDate}&movieId=${id}`, { withCredentials: true });
+        console.log(response.data);
+        
+
         setShows(response.data);
        
       } catch (error) {
@@ -72,7 +75,7 @@ export default function Show() {
                   <button
                     onClick={() => ShowSeat(showId)}
                     key={showId}
-                    className="bg-base-200 hover:bg-base-300 text-gray-700 border-white rounded-lg w-20 h-10 mb-3 mr-1"
+                    className="bg-base-200 hover:bg-base-300 text-white border-white rounded-lg w-20 h-10 mb-3 mr-1"
                   >
                     {showTime}
                   </button>

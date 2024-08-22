@@ -32,8 +32,8 @@ export default function OwnerMovieList() {
   };
 
   return (
-    <div className="container mx-5 ">
-      <div className="card w-full p-6 bg-base-200 shadow-xl mt-6  animate-fade-in-down">
+    <div className="container mx-1 ">
+      <div className="card w-full p-4 shadow-xl mt-1  animate-fade-in-down">
       <div className="card-title flex items-center justify-between">
         <h2 className="text-xl font-semibold">Movies</h2>
         <input className='input input-bordered input-sm  '

@@ -102,6 +102,11 @@ const AddShowModel = ({ isOpen, onClose, refreshShows, selectedMovieId }) => {
                 toast.error(response.data.message || "Failed to add show");
             }
         } catch (error) {
+            console.error("Error adding show:", error); 
+
+        if (error.response) {
+            console.error("Server response:", error.response);
+        }
             if (error.response && error.response.status === 400 && error.response.data.message) {
                 toast.error(error.response.data.message);
             } else {

@@ -4,7 +4,8 @@ import authenticateUser from '../middleware/userMiddleware.js';
 import { allMovies, MovieDetails} from '../controller/movieController.js';
 import { verifyToken } from '../middleware/verifyGoogleToken.js';
 import { addReview } from '../controller/reviewController.js';
-import { GetShowsByDate, ShowSeats } from '../controller/showController.js';
+import { getShowsByDate, ShowSeats } from '../controller/showController.js';
+import {  paymentOrder, verifyPayment } from '../controller/paymentController.js';
 
 const userRouter = express.Router();
 
@@ -18,10 +19,12 @@ userRouter.post("/google",verifyToken,google);
 userRouter.get("/check-user",authenticateUser,checkUser);
 userRouter.get('/movies',allMovies);
 userRouter.get('/movie-details/:id',authenticateUser,MovieDetails);
-userRouter.get('/show',authenticateUser, GetShowsByDate)
+userRouter.get('/show',authenticateUser, getShowsByDate)
 userRouter.get('/show-seats/:showId', authenticateUser,ShowSeats)
 userRouter.post('/add-review', authenticateUser, addReview)
 userRouter.get("/get-user",authenticateUser,getUser);
+userRouter.post("/create-order", authenticateUser, paymentOrder);
+userRouter.post("/verify-payment", authenticateUser, verifyPayment); 
 
 
 

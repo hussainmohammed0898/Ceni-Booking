@@ -10,6 +10,7 @@ import AuthRoute from "../protectRoute/AuthRoute";
 import UserLayout from "../layout/UserLayout";
 import MovieDetails from "../pages/MovieDetails";
 import Show from "../pages/Show";
+import ShowSeats from "../pages/ShowSeats";
 
 export const routes = [{
     element: <HomeLayout/>,
@@ -57,8 +58,11 @@ export const routes = [{
             {
                 path: "/shows/:id",
                 element: <UserRoute><Show/> </UserRoute>
-               
               },
+              {
+                path:"showSeat/:showId",
+                element:<UserRoute><ShowSeats></ShowSeats></UserRoute>
+              }
             
         ]
 }]

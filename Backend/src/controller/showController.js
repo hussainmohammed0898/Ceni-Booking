@@ -1,117 +1,115 @@
 import Theater from "../models/theaterModel.js";
 import { StatusCodes } from "http-status-codes";
-import  {  addMinutes, format, parse, isAfter,startOfDay }  from 'date-fns';
+import  {  addMinutes, format, parse, isAfter,startOfDay, parseISO, endOfDay }  from 'date-fns';
 import Show from "../models/showModel.js";
 
-export const addShow = async (req, res)=>{
-    try {
-        const { movieId, theaterId, showDate, showTime, price } = req.body;
-  
-        if (!movieId || !theaterId || !showDate || !showTime || !price) {
+export const addShow = async (req, res) => {
+  try {
+      const { movieId, theaterId, showDate, showTime, price } = req.body;
+
+      if (!movieId || !theaterId || !showDate || !showTime || !price) {
           return res.status(StatusCodes.BAD_REQUEST).json({ message: "All fields are required" });
-        }
-        const theater = await Theater.findById(theaterId);
-        if (!theater) {
-            return res.status(StatusCodes.NOT_FOUND).json({ message: "Invalid theater ID" });
-          }
+      }
+
+      const theater = await Theater.findById(theaterId);
+      if (!theater) {
+          return res.status(StatusCodes.NOT_FOUND).json({ message: "Invalid theater ID" });
+      }
 
       const combinedDateTimeString = `${showDate} ${showTime}`;
       const combinedDateTime = parse(combinedDateTimeString, "yyyy-MM-dd h:mm a", new Date());
-      if (isNaN(combinedDateTime)) {
-        return res.status(StatusCodes.NOT_FOUND).json({ message: "Invalid date or time format" });
+      if (isNaN(combinedDateTime.getTime())) {
+          return res.status(StatusCodes.BAD_REQUEST).json({ message: "Invalid date or time format" });
       }
-      const existingShow = await Show.findOne({
-        theater: theaterId,
-        showDate: combinedDateTime,
-      });
-      const existingShows = await Show.find({
-        theater: theaterId,
-        showDate: {
-          $gte: addMinutes(combinedDateTime, -150),
-          $lte: addMinutes(combinedDateTime, 150),
-        }
-    });
-
-    if (existingShows.length > 0) {
-        return res.status(StatusCodes.BAD_REQUEST).json({ message: "Another show exists within 3 hours of the specified time" });
-    }
-
-    const seatingPattern = theater.seatingPattern;
-
-    const showSeatingpattern = JSON.parse(JSON.stringify(seatingPattern));
-    const newShow = new Show({
-        movieId: movieId,
-        theater: theaterId,
-        showDate: combinedDateTime,
-        showSeating: showSeatingpattern,
-        price
-      });
-  
-      const savedShow = await newShow.save();
-      res.status(StatusCodes).json(savedShow);
-  
-
       
-          
-        
-    } catch (error) {
-        console.log("Error in add show controller", error.message);
-        res.status(500).json({ error: "Internal Server Error" });
-        
-    }
-}
+      const lastShow = await Show.findOne({ theater: theaterId }).sort({ showDate: -1 });
 
+      if (lastShow) {
+          // Calculate the end time of the last show (assuming show duration is 2.5 hours)
+          const lastShowEndTime = addMinutes(lastShow.showDate, 150); // 150 minutes = 2.5 hours
 
-export const GetShowsByDate = async (req, res) => {
-    const { date, movieId } = req.query;
-    try {
-      if (!date || !movieId) {
-        return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Date and movieId are required' });
+          // Ensure the new show's start time is at least 1 hour after the last show's end time
+          if (combinedDateTime < addMinutes(lastShowEndTime, 60)) {
+              return res.status(StatusCodes.BAD_REQUEST).json({
+                  message: "New show must start at least 1 hour after the previous show ends",
+              });
+          }
       }
-  
-      const selectedDate = new Date(date);
-      const startOfSelectedDate = startOfDay(selectedDate);
-      const endOfSelectedDate = new Date(startOfSelectedDate);
-      endOfSelectedDate.setDate(endOfSelectedDate.getDate() + 1);
 
-      const shows = await Show.find({
-        showDate: {
-          $gte: startOfSelectedDate,
-          $lte: endOfSelectedDate,
-        },
-        movieId,
-      }).populate('theater').populate('movieId');
-    
-      const currentDateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
-    
-      const formattedShows = shows.reduce((acc, show) => {
-        if (!isAfter(show.showDate, currentDateTime)) return acc;
-    
-        const theaterName = show.theater.name;
-    
-        if (!acc[theaterName]) {
-          acc[theaterName] = {
-            theater: theaterName,
-            theaterLocation: show.theater.location,
-            movieName: show.movieId.title,
-            showTimes: [],
-          };
-        }
-    
-        acc[theaterName].showTimes.push({
-          showTime: format(show.showDate, 'h:mm a'),
-          showId: show._id,
-        });
-    
-        return acc;
-      }, {});
-    
-      res.status(StatusCodes.OK).json(Object.values(formattedShows));
-    } catch (error) {
-      console.error('Error fetching shows:', error);
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
+      const showSeatingPattern = JSON.parse(JSON.stringify(theater.seatingPattern));
+      const newShow = new Show({
+          movieId,
+          theater: theaterId,
+          showDate: combinedDateTime,
+          showSeating: showSeatingPattern,
+          price
+      });
+
+      const savedShow = await newShow.save();
+      res.status(StatusCodes.CREATED).json(savedShow);
+
+  } catch (error) {
+      console.log("Error in add show controller", error.message);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+  }
+};
+
+
+export const getShowsByDate = async (req, res) => {
+  console.log("hitting");
+  const { date, movieId } = req.query;
+  try {
+    if (!date || !movieId) {
+      return res.status(400).json({ error: 'Date and movieId are required' });
     }
-  };
+
+    const selectedDate = new Date(date);
+    const startOfSelectedDate = startOfDay(selectedDate);
+    const endOfSelectedDate = new Date(startOfSelectedDate);
+    endOfSelectedDate.setDate(endOfSelectedDate.getDate() + 1);
+
+    const query = {
+      showDate: {
+        $gte: startOfSelectedDate,
+        $lt: endOfSelectedDate
+      },
+      movieId: movieId
+    };
+
+    const shows = await Show.find(query)
+      .populate('theater')
+      .populate('movieId');
+
+    const groupedShows = shows.reduce((acc, show) => {
+      const theaterName = show.theater.name;
+      const movieName = show.movieId.title;
+      const theaterLocation = show.theater.location;
+      const showDateTime = show.showDate;
+
+      if (!acc[theaterName]) {
+        acc[theaterName] = { theater: theaterName, theaterLocation: theaterLocation, movieName: movieName, showTimes: [] };
+      }
+
+      const formattedShowTime = format(showDateTime, 'h:mm a');
+
+ 
+      const currentDateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+      if (isAfter(showDateTime, currentDateTime)) {
+        acc[theaterName].showTimes.push({ showTime: formattedShowTime, showId: show._id });
+      }
+
+      return acc;
+    }, {});
+
+    const formattedShows = Object.values(groupedShows);
+    res.status(200).json(formattedShows);
+  } catch (error) {
+    console.error('Error fetching shows:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+  
+  
+};
   
   
   
@@ -149,7 +147,10 @@ export const GetShowsByDate = async (req, res) => {
       }
 
       export const getShowByOwner = async (req, res) => {
-        const ownerId = req.owner.ownerId;
+        const ownerId = req.owner.data;
+        console.log(ownerId);
+        
+        
         try {
           const theaters = await Theater.find({ owner: ownerId });
       
