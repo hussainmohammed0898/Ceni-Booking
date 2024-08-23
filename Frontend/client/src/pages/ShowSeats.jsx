@@ -79,13 +79,15 @@ function ShowSeats() {
               showId,
               seats: selectedSeats,
               totalPrice: selectedSeats.length * price,
-              paymentId,
+              razorpay_payment_id: paymentId,
               razorpay_signature,
-              orderId: order.id,
+              razorpay_order_id: order.id,
             };
             
             try {
-              const response = await axios.post('http://localhost:3000//api/user/verify-payment', bookingData, { withCredentials: true });
+              const response = await axios.post('http://localhost:3000/api/user/verify-payment', bookingData, { withCredentials: true });
+              console.log("respone:", response);
+              
     
               if (response.status === 200) {
                 setSelectedSeats([]);
@@ -123,16 +125,7 @@ function ShowSeats() {
     );
     const lastSeatNumber = seatNumbers[seatNumbers.length - 1];
 
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-        script.async = true;
-        document.body.appendChild(script);
-        
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
+   
   
   return (
     <div className="container mx-auto px-5 pt-5">

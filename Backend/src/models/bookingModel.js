@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const bookingSchema = new mongoose.Schema(
   {
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
@@ -10,16 +10,6 @@ const bookingSchema = new mongoose.Schema(
     show: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Show',
-      required: true
-    },
-    theater: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Theater',
-      required: true
-    },
-    movie: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Movie',
       required: true
     },
     bookingDate: {
@@ -33,10 +23,7 @@ const bookingSchema = new mongoose.Schema(
         _id: false // Exclude `_id` for subdocuments if not needed
       }
     ],
-    count: {
-      type: Number,
-      required: true
-    },
+    
     totalAmount: {
       type: Number,
       required: true

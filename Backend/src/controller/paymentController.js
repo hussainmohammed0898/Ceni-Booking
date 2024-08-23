@@ -2,6 +2,9 @@ import razorpayInstance from "../config/razorPayInstance.js";
 import crypto from "crypto";
 import { StatusCodes } from "http-status-codes";
 import Booking from "../models/bookingModel.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const paymentOrder =async (req, res)=>{
     console.log("hitting");
@@ -38,10 +41,15 @@ export const paymentOrder =async (req, res)=>{
 export const verifyPayment = async (req, res) => {
     console.log("very hitted");
 
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, showId, seats, totalPrice } = req.body;
+    const userId = req.user.data;
+    console.log('NEW:',userId);
+    
   
-    console.log("req.body", req.body);
+    console.log("Razorpay Order ID:", razorpay_order_id);
+    console.log("Razorpay Payment ID:", razorpay_payment_id);
+    console.log("Razorpay Signature:", razorpay_signature);
+  
   
     try {
       const sign = razorpay_order_id + "|" + razorpay_payment_id;
@@ -55,16 +63,18 @@ export const verifyPayment = async (req, res) => {
       console.log(razorpay_signature === expectedSign);
   
       const isAuthentic = expectedSign === razorpay_signature;
-      console.log(isAuthentic);
-  
+      console.log("ok", isAuthentic);
       if (isAuthentic) {
+        const { showId, seats, totalPrice } = req.body;
+        
         const payment = new Booking({
             razorpay_order_id,
             razorpay_payment_id,
             razorpay_signature,
-            showId,
+            show:showId,
+            userId,
             seats,
-            totalPrice,
+            totalAmount:totalPrice,
             paymentStatus: 'Paid',
             bookingDate: new Date(),
         });
@@ -80,5 +90,7 @@ export const verifyPayment = async (req, res) => {
       console.log(error);
     }
 
-}
+};
+
+
    
