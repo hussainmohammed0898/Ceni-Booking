@@ -56,8 +56,11 @@ export const addShow = async (req, res) => {
 
 
 export const getShowsByDate = async (req, res) => {
-  console.log("hitting");
+  console.log("testing");
+  console.log("query:",req.query);
   const { date, movieId } = req.query;
+  
+  
   try {
     if (!date || !movieId) {
       return res.status(400).json({ error: 'Date and movieId are required' });
@@ -148,6 +151,8 @@ export const getShowsByDate = async (req, res) => {
       }
 
       export const getShowByOwner = async (req, res) => {
+        console.log("testing");
+        
         const ownerId = req.owner.data;
         console.log(ownerId);
         
@@ -163,6 +168,12 @@ export const getShowsByDate = async (req, res) => {
       
           const showDetails = shows.map(show => {
             const theater = theaters.find(t => t._id.equals(show.theater));
+            
+            // Check if movieId is null
+            if (!show.movieId) {
+              return null; // or handle the case as needed
+            }
+            
             return {
               movieName: show.movieId.title,
               movieImage: show.movieId.image,
@@ -170,7 +181,7 @@ export const getShowsByDate = async (req, res) => {
               price: show.price,
               theaterName: theater.name
             };
-          });
+          }).filter(detail => detail !== null);
       
           res.status(StatusCodes.OK).json(showDetails);
         } catch (error) {

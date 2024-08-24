@@ -3,6 +3,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import usePageTitleStore from '../../store/usePageTitleStore';
+import ToggleTheme from '../../ui/ToggleTheme';
 
 
 function  OwnerNavbar() {
@@ -36,6 +37,7 @@ function  OwnerNavbar() {
         </div>
     </div>
     <div className="navbar-end gap-3">
+        <ToggleTheme/>
         
         <button onClick={handleLogout}  className="btn bg-yellow-500 text-gray-800 font-bold border-none hover:bg-yellow-600 ">LOGOUT</button>
    

@@ -18,6 +18,8 @@ const ShowList = () => {
         const fetchShows = async () => {
             try {
                 const res = await axios.get('http://localhost:3000/api/owner/get-shows', { withCredentials: true });
+                console.log("res", res.data);
+                
                 setShows(res.data);
                 setFilteredShows(res.data);
             } catch (error) {
@@ -48,24 +50,25 @@ const ShowList = () => {
 
     const handleFilter = () => {
         let filtered = shows;
-
+    
         if (theaterFilter) {
             filtered = filtered.filter(show => show.theaterName.toLowerCase().includes(theaterFilter.toLowerCase()));
         }
-
+    
         if (dateFilter) {
             filtered = filtered.filter(show => {
-                const adjustedDate = subMinutes(subHours(new Date(show.showDate), 5), 30);
+                const adjustedDate = new Date(show.showDate);
                 return format(adjustedDate, 'yyyy-MM-dd') === dateFilter;
             });
         }
-
+    
         if (movieSearch) {
             filtered = filtered.filter(show => show.movieName.toLowerCase().includes(movieSearch.toLowerCase()));
         }
-
+    
         setFilteredShows(filtered);
     };
+    
 
     useEffect(() => {
         handleFilter();
@@ -153,28 +156,30 @@ const ShowList = () => {
                         </thead>
                         <tbody>
                         {filteredShows.map((show) => {
-                                const adjustedDate = subMinutes(subHours(new Date(show.showDate), 5), 30);
-                                return (
-                                    <tr key={show.id} className="border-t border-base-100">
-                                        <td>
-                                            <div className="flex items-center gap-3">
-                                                <div className="avatar">
-                                                    <div className="mask mask-squircle w-12 h-12">
-                                                        <img src={show.movieImage} alt={show.movieName} className="object-cover" />
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <p className="font-bold">{show.movieName}</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>{show.theaterName}</td>
-                                        <td>{format(adjustedDate, 'dd MMMM yyyy')}</td>
-                                        <td>{format(adjustedDate, 'h:mm aa')}</td>
-                                        <td>{show.price}</td>
-                                    </tr>
-                                );
-                            })}
+    const adjustedDate = new Date(show.showDate);
+    return (
+        <tr key={show.id} className="border-t border-base-100">
+            <td>
+                <div className="flex items-center gap-3">
+                    <div className="avatar">
+                        <div className="mask mask-squircle w-12 h-12">
+                            <img src={show.movieImage} alt={show.movieName} className="object-cover" />
+                        </div>
+                    </div>
+                    <div>
+                        <p className="font-bold">{show.movieName}</p>
+                    </div>
+                </div>
+            </td>
+            <td>{show.theaterName}</td>
+            <td>{format(adjustedDate, 'dd MMMM yyyy')}</td>
+            <td>{format(adjustedDate, 'h:mm aa')}</td>
+            <td>{show.price}</td>
+        </tr>
+    );
+})}
+                       
+                            
                         </tbody>
                     </table>
                 </div>

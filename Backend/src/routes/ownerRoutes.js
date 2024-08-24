@@ -4,6 +4,7 @@ import authenticateOwner from '../middleware/ownerMiddleware.js';
 import { allMovies,  selectMovie, totalMovies } from '../controller/movieController.js';
 import { AddTheater, selectTheater, TheaterByOwner } from '../controller/theatreController.js';
 import { addShow, getShowByOwner } from '../controller/showController.js';
+import { getDashboardStats } from '../controller/dashboardController.js';
 const ownerRoute = express.Router();
 
 ownerRoute.post("/register",addOwner);
@@ -20,6 +21,7 @@ ownerRoute.get('/get-shows', authenticateOwner,getShowByOwner)
 ownerRoute.get('/all-movies',authenticateOwner,allMovies);
 ownerRoute.get('/total-movies',authenticateOwner,totalMovies);
 ownerRoute.get('/my-theaters', authenticateOwner, TheaterByOwner)
+ownerRoute.get('/dashboardStats',authenticateOwner, getDashboardStats)
 
 
 export default ownerRoute
