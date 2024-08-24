@@ -26,7 +26,7 @@ export const createOrder = async (totalAmount,selectedSeats,showId) => {
   
     const options = {
       
-      key:"rzp_test_3BU86REeIzFwj5",
+      key:import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount,
       currency: order.currency || 'INR',
       name: 'Ceni Booking',
