@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BiSolidCameraMovie } from "react-icons/bi";
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import ToggleTheme from '../../ui/ToggleTheme';
 
 function UserNavbar() {
     const navigate = useNavigate()
@@ -24,22 +25,10 @@ function UserNavbar() {
 
 
   return (
-    <div className="navbar bg-slate-800 z-50">
+    <div className="navbar bg-slate-800 z-50 shadow-lg fixed">
   <div className="navbar-start">
     <div className="dropdown">
       <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 6h16M4 12h8m-8 6h16" />
-        </svg>
       </div>
       <ul
         tabIndex={0}
@@ -53,7 +42,7 @@ function UserNavbar() {
     </div>
     <Link to={'/'}  className="btn btn-ghost text-xl" >
     <BiSolidCameraMovie className='text-yellow-600' />
-    CeniBooking</Link>
+    CineBooking</Link>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">
@@ -64,7 +53,9 @@ function UserNavbar() {
           ))}
           </ul>
   </div>
-  <div className="navbar-end">
+  
+  <div className="navbar-end gap-4">
+  <ToggleTheme/>
   <button onClick={handleLogout} className="btn bg-yellow-500 text-gray-800 font-bold border-none hover:bg-yellow-600 ">LOGOUT</button>
   </div>
 </div>

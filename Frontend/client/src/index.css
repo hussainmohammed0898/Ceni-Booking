@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+[data-theme="dark"] .navbar,
+[data-theme="dark"] .footer {
+box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #1f2735; 
+  color: white; 
+}
+
+
+[data-theme="light"] .navbar,
+[data-theme="light"] .footer {
+    box-shadow: none;
+  background-color: #dce0e1; 
+  color: black; 
+}
+
+[data-theme="light"] .show{
+    color: white;
+}
+
+
+
+
+

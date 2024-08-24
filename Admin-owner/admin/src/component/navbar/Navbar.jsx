@@ -2,6 +2,7 @@ import React from 'react'
 import { BiSolidCameraMovie } from "react-icons/bi";
 import { Link } from 'react-router-dom';
 
+
 function Navbar() {
   const links = [
     { name: 'HOME', path: '/' },
@@ -48,6 +49,7 @@ function Navbar() {
           </ul>
   </div>
   <div className="navbar-end">
+   
   <Link to="/sign-up" className="btn bg-yellow-500 text-gray-800 font-bold border-none hover:bg-yellow-600 ">SIGNUP</Link>
   </div>
 </div>

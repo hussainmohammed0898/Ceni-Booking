@@ -39,7 +39,7 @@ function Navbar() {
     </div>
     <Link to={'/'}  className="btn btn-ghost text-xl" >
     <BiSolidCameraMovie className='text-yellow-600' />
-    CeniBooking</Link>
+    CineBooking</Link>
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">
