@@ -52,7 +52,7 @@ const ViewBooking = () => {
   };
 
   return (
-    <div className="min-h-screen p-4">
+    <div className="min-h-screen p-4 ">
       <h1 className="text-3xl font-bold mb-6 text-center">Booking List</h1>
       {loading ? (
         <div className="space-y-4">
@@ -63,12 +63,12 @@ const ViewBooking = () => {
           ))}
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-4 ">
           {bookings.map((booking) => (
-            <div key={booking._id} className="card w-full max-w-4xl bg-base-300 shadow-xl p-4 rounded-lg mx-auto">
+            <div key={booking._id} className="card w-full max-w-4xl bg-base-300 shadow-xl p-4 rounded-lg mx-auto border border-gray-400">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl w-3/4 font-bold">{booking.show?.movieId?.title}</h2>
-                <span className="badge badge-lg badge-primary text-clip w-2/4 md:w-32 text-sm text-primary-content">
+                <span className=" text-clip w-2/4 md:w-32 text-sm font-bold">
                   {booking.show?.showDate ? format(new Date(booking.show?.showDate), "d MMMM yyyy") : 'N/A'}
                 </span>
               </div>

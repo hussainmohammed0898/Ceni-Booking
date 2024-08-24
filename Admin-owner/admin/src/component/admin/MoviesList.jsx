@@ -78,7 +78,7 @@ export default function MoviesList() {
 <tbody>
 
 {movies.map((movie) => (
-                <tr key={movie._id} className='border-t border-base-100'>
+                <tr key={movie._id} className='border-t border-base-200'>
                   <td>
                     <div className="flex items-center gap-3">
                       <div className="avatar">
