@@ -6,6 +6,7 @@ import { verifyToken } from '../middleware/verifyGoogleToken.js';
 import { addReview } from '../controller/reviewController.js';
 import { getShowsByDate, ShowSeats } from '../controller/showController.js';
 import {  paymentOrder, verifyPayment } from '../controller/paymentController.js';
+import { viewBooking } from '../controller/bookingController.js';
 
 const userRouter = express.Router();
 
@@ -25,6 +26,7 @@ userRouter.post('/add-review', authenticateUser, addReview)
 userRouter.get("/get-user",authenticateUser,getUser);
 userRouter.post("/create-order", authenticateUser, paymentOrder);
 userRouter.post("/verify-payment", authenticateUser, verifyPayment); 
+userRouter.get("/view-booking",authenticateUser,viewBooking);
 
 
 

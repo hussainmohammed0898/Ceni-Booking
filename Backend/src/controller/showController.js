@@ -125,6 +125,7 @@ export const getShowsByDate = async (req, res) => {
         if (!show) {
           return res.status(StatusCodes.NOT_FOUND).json({ message: "Show not found" });
         }
+       
         
         res.status(StatusCodes.OK).json({ showSeating: show.showSeating,price: show.price});
   

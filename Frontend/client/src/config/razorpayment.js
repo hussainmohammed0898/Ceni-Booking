@@ -6,6 +6,8 @@ export const createOrder = async (totalAmount,selectedSeats,showId) => {
     const response = await axios.post('http://localhost:3000/api/user/create-order', {totalAmount, selectedSeats,showId}, { withCredentials: true });
     console.log(response.data, 'ordersss');
     return response.data.data;
+
+    
     
   };
 

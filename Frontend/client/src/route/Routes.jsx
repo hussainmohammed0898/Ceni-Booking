@@ -11,6 +11,7 @@ import UserLayout from "../layout/UserLayout";
 import MovieDetails from "../pages/MovieDetails";
 import Show from "../pages/Show";
 import ShowSeats from "../pages/ShowSeats";
+import ViewBooking from "../pages/BookingList";
 
 export const routes = [{
     element: <HomeLayout/>,
@@ -61,8 +62,13 @@ export const routes = [{
               },
               {
                 path:"showSeat/:showId",
-                element:<UserRoute><ShowSeats></ShowSeats></UserRoute>
+                element:<UserRoute><ShowSeats/></UserRoute>
+              },
+              {
+                path:"/bookings",
+                element:<UserRoute><ViewBooking/></UserRoute>
               }
+
             
         ]
 }]

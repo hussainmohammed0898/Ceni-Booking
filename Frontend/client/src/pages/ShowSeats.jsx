@@ -25,8 +25,6 @@ function ShowSeats() {
             console.log("show",response.data);
             setSeats(response.data.showSeating);
             setPrice(response.data.price);
-
-            
           } catch (error) {
             console.error('Error fetching seating pattern:', error);
           }
@@ -43,24 +41,21 @@ function ShowSeats() {
         const newSeats = [...seats];
         const seat = newSeats[rowIndex][seatIndex];
         let newSelectedSeats = [...selectedSeats];
-    
+      
         if (seat.status === 'available') {
           if (newSelectedSeats.length < 10) {
             seat.status = 'selected';
-            newSelectedSeats = [...newSelectedSeats, seat.seat];
+            newSelectedSeats = [...newSelectedSeats, { row: seat.row, number: seat.number }];
           } else {
             toast.error('You can only book up to 10 seats at a time.');
           }
         } else if (seat.status === 'selected') {
           seat.status = 'available';
-          newSelectedSeats = newSelectedSeats.filter(selectedSeat => selectedSeat !== seat.seat);
+          newSelectedSeats = newSelectedSeats.filter(selectedSeat => selectedSeat.number !== seat.number);
         }
-    
+      
         setSeats(newSeats);
         setSelectedSeats(newSelectedSeats);
-        
-    
-       
       };
     
       const handleBooking = async () => {
@@ -77,7 +72,11 @@ function ShowSeats() {
           handlePayment(order, async (paymentId, razorpay_signature) => {
             const bookingData = {
               showId,
-              seats: selectedSeats,
+              seats: selectedSeats.map(seat => ({
+                row: seat.row,
+                number: seat.number,
+                status: 'booked'
+              })),
               totalPrice: selectedSeats.length * price,
               razorpay_payment_id: paymentId,
               razorpay_signature,
@@ -87,6 +86,8 @@ function ShowSeats() {
             try {
               const response = await axios.post('http://localhost:3000/api/user/verify-payment', bookingData, { withCredentials: true });
               console.log("respone:", response);
+
+              
               
     
               if (response.status === 200) {
@@ -137,10 +138,12 @@ function ShowSeats() {
                         {row.map((seat, seatIndex) => (
                             <div
                                 key={seatIndex}
-                                className={`p-2 border rounded text-center cursor-pointer 
-                                  ${seat.status === 'reserved' ? 'bg-red-500' : seat.status === 'selected' ? 'bg-yellow-500' : 'bg-green-500'} text-white`}
-                                onClick={() => handleSeat(rowIndex, seatIndex)}
-                            >
+                                className={`p-2 border rounded text-center cursor-pointer text-white
+                                  ${seat.status === 'booked' || seat.status === 'reserved' ? 'bg-red-500' : seat.status === 'selected' ? 'bg-yellow-500' : 'bg-green-500'}
+                        ${seat.status === 'booked' || seat.status === 'reserved'}`}
+                      style={{ cursor: seat.status === 'booked' || seat.status === 'reserved' ? 'default' : 'pointer' }}
+                      onClick={() => (seat.status === 'available' || seat.status === 'selected') && handleSeat(rowIndex, seatIndex)}
+                    >
                                 {seat.row}{seat.number}
                             </div>
                         ))}
