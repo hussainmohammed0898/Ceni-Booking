@@ -18,7 +18,6 @@ const links = [
         { name: 'Pending Approvals', path: '/theater/pending-approval' }
       ]
     },
-    { name: 'Transactions', path: '/transactions' },
   ];
 
 function LeftSide() {

@@ -6,6 +6,7 @@ import { checkAdmin } from '../controller/ownerController.js';
 import { approveTheater, getApprovedTheaters, notApprovedTheaters, totalTheaters } from '../controller/theatreController.js';
 import { totalReviews } from '../controller/reviewController.js';
 import { totalUser } from '../controller/userController.js';
+import { adminDashboard } from '../controller/dashboardController.js';
 
 
 
@@ -23,6 +24,7 @@ adminRouter.get('/check-admin',authenticateAdmin,checkAdmin);
 adminRouter.get('/total-review',authenticateAdmin,totalReviews);
 adminRouter.get('/total-movies',authenticateAdmin,totalMovies);
 adminRouter.get('/total-users',authenticateAdmin,totalUser);
+adminRouter.get('/adminDashboard',authenticateAdmin,adminDashboard);
 
 
 

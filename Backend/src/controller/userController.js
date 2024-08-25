@@ -5,6 +5,8 @@ import { generateToken } from "../utilities/generalToken.js";
 import nodemailer from 'nodemailer';
 import serverConfig from "../config/serverConfig.js";
 import jwt from 'jsonwebtoken';
+import Booking from "../models/bookingModel.js";
+import Review from "../models/reviewModel.js";
 
 
 export const signup = async (req, res)=>{
@@ -209,12 +211,22 @@ export const getUser = async (req, res) => {
 
 export const  totalUser = async (req, res) => {
   try {
-      const user = await User.find();
-      res.status(StatusCodes.CREATED).json({ totalUser: user.length });  
+    const users = await User.find();
+    const usersWithStats = await Promise.all(users.map(async user => {
+      const bookings = await Booking.find({ userId: user._id });
+      const reviews = await Review.find({ userId: user._id });
+      return {
+        ...user._doc,
+        totalBookings: bookings.length,
+        totalReviews: reviews.length
+      };
+    }));
+    res.json(usersWithStats);
   } catch (error) {
-      console.error('Error fetching total user:', error);
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+    console.error('Error fetching users with stats:', error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
   }
+
 };
 
 export const google = async (req, res)=>{

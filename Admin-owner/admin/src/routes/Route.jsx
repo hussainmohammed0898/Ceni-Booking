@@ -1,5 +1,6 @@
 import AdminDashboard from "../component/admin/AdminDashboard";
 import ApproveTheater from "../component/admin/ApproveTheater";
+import UserList from "../component/admin/UserLists";
 import MoviesList from "../component/admin/MoviesList";
 import PendingTheater from "../component/admin/PendingTheater";
 import Login from "../component/auth/Login";
@@ -62,7 +63,11 @@ export const routes = [
             },
             {
                 path:"/theaters/approved",
-                element:<AdminRoutes><ApproveTheater></ApproveTheater></AdminRoutes>
+                element:<AdminRoutes><ApproveTheater/></AdminRoutes>
+            },
+            {
+                path:"/users",
+                element:<AdminRoutes><UserList/></AdminRoutes>
             }
         ]
     },
