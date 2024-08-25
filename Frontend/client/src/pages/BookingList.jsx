@@ -63,40 +63,44 @@ const ViewBooking = () => {
           ))}
         </div>
       ) : (
-        <div className="space-y-4 ">
+        <div className=" space-y-4 px-1 md:px-28 pt-5">
           {bookings.map((booking) => (
-            <div key={booking._id} className="card w-full max-w-4xl bg-base-300 shadow-xl p-4 rounded-lg mx-auto border border-gray-400">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl w-3/4 font-bold">{booking.show?.movieId?.title}</h2>
-                <span className=" text-clip w-2/4 md:w-32 text-sm font-bold">
-                  {booking.show?.showDate ? format(new Date(booking.show?.showDate), "d MMMM yyyy") : 'N/A'}
-                </span>
-              </div>
-              <div className="divider"></div>
-              <div className="flex flex-wrap justify-between">
-                <div className="w-full md:w-auto mb-2 lg:w-1/2">
-                  <span className="font-semibold">Booking ID: </span>
-                  <span>{booking._id}</span>
-                </div>
-                <div className="w-full md:w-auto mb-2 lg:w-1/2">
-                  <span className="font-semibold">Theater: </span>
-                  <span>{booking.show?.theater?.name || 'N/A'}</span>
-                </div>
-                <div className="w-full md:w-auto mb-2 lg:w-1/2">
-                  <span className="font-semibold">Show Date: </span>
-                  <span>{booking.show?.showDate ? new Date(booking.show?.showDate).toLocaleDateString() : 'N/A'}</span>
-                </div>
-                <div className="w-full md:w-auto mb-2 lg:w-1/2">
-                  <span className="font-semibold">Booked Seats: </span>
-                  <span>{booking.seats ? booking.seats.join(', ') : 'No booked seats'}</span>
-                </div>
-                <div className="w-full md:w-auto mb-2 lg:w-1/2 text-right">
-                  {booking.show?.showDate && (
-                    <button onClick={() => handleOpenModal(booking.show?.movieId, booking.show?.movieName)} className="btn btn-success text-primary-content">Add Review</button>
-                  )}
-                </div>
+            <div className="card card-side bg-base-300  shadow-xl">
+            <figure>
+              <img
+                src={booking.show?.movieId?.image}
+                alt="Movie" 
+                className=' md:h-56 ml-3'
+                />
+            </figure>
+            <div className="card-body">
+              <h2 className="card-title">{booking.show?.movieId?.title}</h2>
+              <span className=" text-clip w-2/4 md:w-32 text-sm font-bold">
+   {booking.show?.showDate ? format(new Date(booking.show?.showDate), "d MMMM yyyy") : 'N/A'}</span>
+   <div className="w-full md:w-auto +lg:w-1/2">
+   <span className="font-semibold">Booking ID: </span>
+   <span>{booking._id}</span>
+   </div>
+   <div className=" w-full md:w-auto  lg:w-1/2">
+   <span className="font-semibold">Theater: </span>
+   <span>{booking.show?.theater?.name || 'N/A'}</span>
+ </div>
+ <div className="w-full md:w-auto mb-2 lg:w-1/2">
+   <span className="font-semibold">Show Date: </span>
+   <span>{booking.show?.showDate ? new Date(booking.show?.showDate).toLocaleDateString() : 'N/A'}</span>
+ </div>
+ <div className="w-full md:w-auto mb-2 lg:w-1/2">
+   <span className="font-semibold">Booked Seats: </span>
+   <span>{booking.seats ? booking.seats.join(', ') : 'No booked seats'}</span>
+ </div>
+              <div className="card-actions justify-end">
+              {booking.show?.showDate && (
+     <button onClick={() => handleOpenModal(booking.show?.movieId, booking.show?.movieName)} className="btn btn-success text-primary-content">Add Review</button>
+   )}
               </div>
             </div>
+          </div>
+           
           ))}
         </div>
       )}

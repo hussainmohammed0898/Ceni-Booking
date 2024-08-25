@@ -13,7 +13,7 @@ export const viewBooking = async (req, res) => {
       .populate({
         path: 'show',
         populate: [
-          { path: 'movieId', select: 'title' },
+          { path: 'movieId' },
           { path: 'theater', select: 'name' }
         ]
         
