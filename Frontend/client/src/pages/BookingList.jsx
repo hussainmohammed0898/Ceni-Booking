@@ -51,7 +51,17 @@ const ViewBooking = () => {
     setSelectedMovieId(null);
     setSelectedMovieName(null);
   };
-
+  const formatSeats = (seats) => {
+    if (!Array.isArray(seats)) {
+      return 'No booked seats'; 
+    }
+    
+    return seats
+      .filter(seat => seat && seat.row && seat.number) 
+      .map(seat => `${seat.row}${seat.number}`) 
+      .join(', '); 
+  };
+  
   return (
     <div className="min-h-screen p-4 ">
       <h1 className="text-3xl font-bold mb-6 text-center">Booking List</h1>
@@ -92,7 +102,7 @@ const ViewBooking = () => {
  </div>
  <div className="w-full md:w-auto mb-2 lg:w-1/2">
    <span className="font-semibold">Booked Seats: </span>
-   <span>{booking.seats ? booking.seats.join(', ') : 'No booked seats'}</span>
+   <span>{booking.seats ? formatSeats(booking.seats) : 'No booked seats'}</span>               
  </div>
               <div className="card-actions justify-end">
               {booking.show?.showDate && (

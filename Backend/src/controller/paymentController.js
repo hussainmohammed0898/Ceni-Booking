@@ -40,57 +40,58 @@ export const paymentOrder =async (req, res)=>{
 }
 
 export const verifyPayment = async (req, res) => {
-  console.log("very hitted");
+  console.log("Payment verification triggered.");
 
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature, showId, seats, totalPrice } = req.body;
   const userId = req.user.data;
-  console.log('NEW:',userId);
   
-
-  console.log("Razorpay Order ID:", razorpay_order_id);
-  console.log("Razorpay Payment ID:", razorpay_payment_id);
-  console.log("Razorpay Signature:", razorpay_signature);
-
-
   try {
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
-
-    // secret_key - random bytes
     const expectedSign = crypto
       .createHmac("sha256", process.env.RAZORPAY_SECRET || "s")
       .update(sign.toString())
       .digest("hex");
 
-    console.log(razorpay_signature === expectedSign);
-
     const isAuthentic = expectedSign === razorpay_signature;
-    console.log("ok", isAuthentic);
+    
     if (isAuthentic) {
-      const { showId, seats, totalPrice } = req.body;
-
-      
-      
+      // Save booking information
       const payment = new Booking({
-          razorpay_order_id,
-          razorpay_payment_id,
-          razorpay_signature,
-          show:showId,
-          userId,
-          seats,
-          totalAmount:totalPrice,
-          paymentStatus: 'Paid',
-          bookingDate: new Date(),
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+        show: showId,
+        userId,
+        seats,
+        totalAmount: totalPrice,
+        paymentStatus: 'Paid',
+        bookingDate: new Date(),
       });
 
       await payment.save();
 
-      res.json({
-        message: "Payement Successfully",
+      // Update seat statuses
+      const show = await Show.findById(showId);
+      
+      seats.forEach(selectedSeat => {
+        show.showSeating.forEach(row => {
+          row.forEach(seat => {
+            if (seat && seat.row === selectedSeat.row && seat.number === selectedSeat.number) {
+              seat.status = 'booked';
+              console.log(`Seat ${seat.row}${seat.number} status updated to 'booked'`);
+            }
+          });
+        });
       });
+
+      await show.save();
+
+      res.status(200).send({ success: true, message: 'Booking successful', booking: payment });
+    } else {
+      res.status(400).json({ message: "Payment verification failed." });
     }
   } catch (error) {
+    console.error("Error during payment verification:", error);
     res.status(500).json({ message: "Internal Server Error!" });
-    console.log(error);
   }
-
 };

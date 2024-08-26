@@ -89,9 +89,20 @@ function ShowSeats() {
               console.log("respone:", response);
 
               
+              console.log("selectd seats:",selectedSeats);
               
     
               if (response.status === 200) {
+                const updatedSeats = seats.map(row => 
+                  row.map(seat => {
+                    const isSelected = selectedSeats.find(
+                      selectedSeat => selectedSeat.row === seat.row && selectedSeat.number === seat.number
+                    );
+                    return isSelected ? { ...seat, status: 'booked' } : seat;
+                  })
+                );
+      
+                setSeats(updatedSeats);
                 setSelectedSeats([]);
                 toast.success('Booking successful!');
                 navigate('/bookings');
