@@ -76,7 +76,7 @@ export const ownerLogin =async(req, res)=>{
     console.log(token);
     
    
-    res.cookie('access_token',token,{httpOnly:true})
+    res.cookie('access_token',token,{httpOnly:true, sameSite:'None', secure:true})
     res.status(StatusCodes.ACCEPTED).json({message:"login successfully completed", role:ownerExist.role});  
     
    } catch (error) {
