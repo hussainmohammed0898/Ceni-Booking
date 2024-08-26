@@ -1,9 +1,10 @@
 import admin from "firebase-admin";
-import ceni from "./ceni-booking-firebase-adminsdk-9o8ll-535306fd65.json" assert { type: 'json' };;
+import { admindk } from "./ceni-booking-firebase-adminsdk.js";
+
 
 
 admin.initializeApp({
-    credential: admin.credential.cert(ceni),
+    credential: admin.credential.cert(admindk),
   });
 
   export default admin;
