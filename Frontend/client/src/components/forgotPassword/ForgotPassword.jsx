@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 function ForgotPassword() {
     const [email, setEmail] = useState();
@@ -14,7 +15,7 @@ function ForgotPassword() {
           return;
         }
         try {
-          const response = await axios.post('http://localhost:3000/api/user/forgot-password', { email });
+          const response = await axios.post(`${baseUrl}/api/user/forgot-password`, { email });
           console.log("backend",response);
           toast.success(response.data.message);
       } catch (error) {

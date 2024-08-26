@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Bar, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -19,7 +20,7 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/admin/adminDashboard',{withCredentials:true});
+                const response = await axios.get(`${baseUrl}/api/admin/adminDashboard`,{withCredentials:true});
                 setStats(response.data.data);
                 setLoading(false);
             } catch (error) {

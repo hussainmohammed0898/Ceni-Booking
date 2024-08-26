@@ -3,6 +3,7 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import { BookingSkeleton } from '../ui/Skeleton';
 import Review from './Review';
+import { baseUrl } from '../URL/baseUrl.js';
 
 const ViewBooking = () => {
   const [bookings, setBookings] = useState([]);
@@ -14,7 +15,7 @@ const ViewBooking = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/user/view-booking', { withCredentials: true });
+        const response = await axios.get(`${baseUrl}/api/user/view-booking`, { withCredentials: true });
         console.log("response", response.data);
         
         const { bookings } = response.data;

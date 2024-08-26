@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 function ResetPassword() {
     const navigate = useNavigate()
@@ -11,7 +12,7 @@ function ResetPassword() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:3000/api/owner/reset-password/${id}/${token}`, { newPassword });
+            const response = await axios.post(`${baseUrl}/api/owner/reset-password/${id}/${token}`, { newPassword });
             toast.success(response.data.message);
             navigate('/login')
 

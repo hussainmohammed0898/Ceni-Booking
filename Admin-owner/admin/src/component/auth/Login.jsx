@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import useUserRoleStore from '../../store/useUserRoleStore';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 
 const userSchema = yup.object({
@@ -30,7 +31,7 @@ function Login() {
     const onSubmit = async (data) => {
         try {
             setLoading(true);
-            const res = await axios.post(' http://localhost:3000/api/owner/login', data, { withCredentials: true, },);
+            const res = await axios.post(`${baseUrl}/api/owner/login`, data, { withCredentials: true, },);
            
             const userRole = res.data.role;
             setUserRole(userRole); 

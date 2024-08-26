@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { baseUrl } from '../URL/baseUrl.js';
 
 function UserRoute({children}) {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ useEffect(() => {
     const checkUser = async () => {
       try {
         const res = await axios.get(
-          'http://localhost:3000/api/user/check-user', { withCredentials: true}
+          `${baseUrl}/api/user/check-user`, { withCredentials: true}
         );
         const data = res.data;
         if (data.success === true) {

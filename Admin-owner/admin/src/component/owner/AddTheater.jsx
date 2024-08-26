@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 const theaterSchema = Yup.object().shape({
     name: Yup.string().required('Theater Name is required'),
@@ -39,7 +40,7 @@ export default function AddTheater() {
         };
         try {
             setLoading(true);
-            const response = await axios.post('http://localhost:3000/api/owner/add-theater', formData, { withCredentials: true });
+            const response = await axios.post(`${baseUrl}/api/owner/add-theater`, formData, { withCredentials: true });
             toast.success(response.data.message);
             setGeneratedSeats([]);
             navigate('/theaters/my-theaters');

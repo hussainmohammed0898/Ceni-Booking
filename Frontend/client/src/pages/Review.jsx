@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { baseUrl } from '../URL/baseUrl.js';
 
 
 const schema = yup.object().shape({
@@ -21,7 +22,7 @@ function Review({ isOpen, onClose, movieId, movieName }) {
         setLoading(true);
         try {
           
-          await axios.post('http://localhost:3000/api/user/add-review', { ...data, movieId },{ withCredentials: true });
+          await axios.post(`${baseUrl}/api/user/add-review`, { ...data, movieId },{ withCredentials: true });
           toast.success('Review added succesfully')
           reset();
           onClose();

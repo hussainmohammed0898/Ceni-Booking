@@ -7,6 +7,7 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, setHours, setMinutes } from 'date-fns';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 
 const showSchema = Yup.object().shape({
@@ -35,7 +36,7 @@ const AddShowModel = ({ isOpen, onClose, refreshShows, selectedMovieId }) => {
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/owner/select-movie', { withCredentials: true });
+                const response = await axios.get(`${baseUrl}/api/owner/select-movie`, { withCredentials: true });
                 setMovies(response.data);
             } catch (error) {
                 console.error("Error fetching movies", error.message);
@@ -45,7 +46,7 @@ const AddShowModel = ({ isOpen, onClose, refreshShows, selectedMovieId }) => {
 
         const fetchTheaters = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/owner/select-theater', { withCredentials: true });
+                const response = await axios.get(`${baseUrl}/api/owner/select-theater`, { withCredentials: true });
                 console.log(response.data);
                 
                 setTheaters(response.data);
@@ -91,7 +92,7 @@ const AddShowModel = ({ isOpen, onClose, refreshShows, selectedMovieId }) => {
                 showTime
             };
 
-            const response = await axios.post('http://localhost:3000/api/owner/add-shows', formattedData, { withCredentials: true });
+            const response = await axios.post(`${baseUrl}/api/owner/add-shows`, formattedData, { withCredentials: true });
 
             if (response.status === 201) {
                 toast.success("Show added successfully!");

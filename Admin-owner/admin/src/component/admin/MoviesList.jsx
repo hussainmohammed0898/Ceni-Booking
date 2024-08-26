@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import Modal from '../admin/ConfirmModel';
 import { BsFillTrash3Fill } from "react-icons/bs";
 import AddEditModel from './AddMovies';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 export default function MoviesList() {
   const [movies, setMovies] = useState([]);
@@ -13,7 +14,7 @@ export default function MoviesList() {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/admin/all-movies', { withCredentials: true });
+        const res = await axios.get(`${baseUrl}/api/admin/all-movies`, { withCredentials: true });
         setMovies(res.data);
       } catch (error) {
         console.log('Error fetching movies:', error.message);
@@ -31,7 +32,7 @@ export default function MoviesList() {
   const confirmDelete = async () => {
     if (deleteMovieId) {
       try {
-        await axios.delete(`http://localhost:3000/api/admin/delete-movie/${deleteMovieId}`, { withCredentials: true });
+        await axios.delete(`${baseUrl}/api/admin/delete-movie/${deleteMovieId}`, { withCredentials: true });
         setMovies(movies.filter(movie => movie._id !== deleteMovieId));
         toast.success('Movie deleted successfully');
       } catch (error) {

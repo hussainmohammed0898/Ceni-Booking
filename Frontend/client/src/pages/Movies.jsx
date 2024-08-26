@@ -5,6 +5,7 @@ import axios from 'axios';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import { baseUrl } from '../URL/baseUrl.js';
 
 
 function Movies() {
@@ -17,7 +18,7 @@ function Movies() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/user/movies', { withCredentials: true });
+        const response = await axios.get(`${baseUrl}/api/user/movies`, { withCredentials: true });
         const currentDate = new Date();
 
         const nowPlaying = response.data.filter(movie => new Date(movie.releaseDate) <= currentDate);

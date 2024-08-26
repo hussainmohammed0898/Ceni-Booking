@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -11,7 +12,7 @@ function OwnerDashboard() {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/owner/dashboardStats', { withCredentials: true });
+                const response = await axios.get(`${baseUrl}/api/owner/dashboardStats`, { withCredentials: true });
                 console.log("res:", response.data);
                 setStats(response.data);
             } catch (error) {

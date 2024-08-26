@@ -1,7 +1,7 @@
 import React from 'react'
 import { BiSolidCameraMovie } from "react-icons/bi";
 import { Link } from 'react-router-dom';
-import ToggleTheme from '../../ui/ToggleTheme';
+
 
 
 function Navbar() {

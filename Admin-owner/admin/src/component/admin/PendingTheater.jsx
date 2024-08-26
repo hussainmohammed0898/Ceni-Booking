@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 
 
@@ -12,7 +13,7 @@ function PendingTheater() {
     useEffect(() => {
         const fetchPendingTheaters = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/admin/not-approved-theaters', {withCredentials:true});
+                const response = await axios.get(`${baseUrl}/api/admin/not-approved-theaters`, {withCredentials:true});
                 // console.log(response.data);
                 setTheaters(response.data);
                 
@@ -31,7 +32,7 @@ function PendingTheater() {
 
     const approveTheater = async (theaterId) => {
         try {
-            await axios.put(`http://localhost:3000/api/admin/approve-theaters/${theaterId}`,{withCredentials:true});
+            await axios.put(`${baseUrl}/api/admin/approve-theaters/${theaterId}`,{withCredentials:true});
             setTheaters(theaters.filter(theater => theater._id !== theaterId));
             toast.success('Theater approved successfully');
         } catch (error) {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { MyTheatersSkeleton } from '../../ui/skeleton';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 
 export default function MytheaterList() {
@@ -11,7 +12,7 @@ export default function MytheaterList() {
     const fetchTheaters = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:3000/api/owner/my-theaters', { withCredentials: true });
+        const response = await axios.get(`${baseUrl}/api/owner/my-theaters`, { withCredentials: true });
         console.log(response.data);
         setTheaters(response.data);
       } catch (error) {

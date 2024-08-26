@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import usePageTitleStore from '../../store/usePageTitleStore';
 import ToggleTheme from '../../ui/ToggleTheme';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 
 function  OwnerNavbar() {
@@ -16,7 +17,7 @@ function  OwnerNavbar() {
 
     const handleLogout = async ()=>{
         try {
-           await axios.post('http://localhost:3000/api/owner/logout','',{withCredentials: true});
+           await axios.post(`${baseUrl}/api/owner/logout`,'',{withCredentials: true});
            toast.success('Logged out successfully');
            navigate('/login', { replace: true });
             

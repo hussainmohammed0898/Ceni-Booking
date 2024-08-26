@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { createOrder, handlePayment } from '../config/razorpayment.js';
+import { baseUrl } from '../URL/baseUrl.js';
 
 
 
@@ -21,7 +22,7 @@ function ShowSeats() {
     useEffect(() => {
         const fetchSeatingPattern = async () => {
           try {
-            const response = await axios.get(`http://localhost:3000/api/user/show-seats/${showId}`, { withCredentials: true });
+            const response = await axios.get(`${baseUrl}/api/user/show-seats/${showId}`, { withCredentials: true });
             console.log("show",response.data);
             setSeats(response.data.showSeating);
             setPrice(response.data.price);
@@ -84,7 +85,7 @@ function ShowSeats() {
             };
             
             try {
-              const response = await axios.post('http://localhost:3000/api/user/verify-payment', bookingData, { withCredentials: true });
+              const response = await axios.post(`${baseUrl}/api/user/verify-payment`, bookingData, { withCredentials: true });
               console.log("respone:", response);
 
               

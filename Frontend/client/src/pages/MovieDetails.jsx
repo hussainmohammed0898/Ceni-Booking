@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import useMovieTitleStore from '../zustand/store';
 import { MovieDetailSkeleton } from '../ui/Skeleton';
 import ShowReview from '../pages/ShowReview';
+import { baseUrl } from '../URL/baseUrl.js';
 
 
 
@@ -17,7 +18,7 @@ export default function MovieDetails() {
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/user/movie-details/${id}`, { withCredentials: true });
+        const response = await axios.get(`${baseUrl}/api/user/movie-details/${id}`, { withCredentials: true });
       
         setMovie(response.data);
         setMovieTitle(response.data.title);

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import Avatar from 'react-avatar';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
@@ -10,7 +11,7 @@ export default function UserList() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/admin/total-users',{withCredentials:true});
+        const response = await axios.get(`${baseUrl}/api/admin/total-users`,{withCredentials:true});
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error);

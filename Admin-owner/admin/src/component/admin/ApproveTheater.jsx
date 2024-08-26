@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 function ApproveTheater() {
     const [theaters, setTheaters] = useState([]);
@@ -9,7 +10,7 @@ function ApproveTheater() {
     useEffect(() => {
         const fetchTheater = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/admin/approved-theaters',{withCredentials:true});
+                const response = await axios.get(`${baseUrl}/api/admin/approved-theaters`,{withCredentials:true});
                 setTheaters(response.data);
             } catch (error) {
                 console.error('Error fetching theaters:', error);

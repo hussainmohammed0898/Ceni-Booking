@@ -1,9 +1,10 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { baseUrl } from '../URL/baseUrl.js';
 
 
 export const createOrder = async (totalAmount,selectedSeats,showId) => {
-    const response = await axios.post('http://localhost:3000/api/user/create-order', {totalAmount, selectedSeats,showId}, { withCredentials: true });
+    const response = await axios.post(`${baseUrl}/api/user/create-order`, {totalAmount, selectedSeats,showId}, { withCredentials: true });
     console.log(response.data, 'ordersss');
     return response.data.data;
 
@@ -12,7 +13,7 @@ export const createOrder = async (totalAmount,selectedSeats,showId) => {
   };
 
   export const handlePayment = async (order, callback) => {
-    const response = await axios.get('http://localhost:3000/api/user/get-user', { withCredentials: true });
+    const response = await axios.get(`${baseUrl}/api/user/get-user`, { withCredentials: true });
     console.log(response.data);
     
     const userData = response.data;

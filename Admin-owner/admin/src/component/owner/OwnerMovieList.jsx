@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import AddShowModel from './AddShowModel';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 export default function OwnerMovieList() {
   const [movies, setMovies] = useState([]);
@@ -12,7 +13,7 @@ export default function OwnerMovieList() {
  useEffect(()=>{
     const fetchMovies = async ()=>{
         try {
-            const res = await axios.get('http://localhost:3000/api/owner/all-movies', { withCredentials: true });
+            const res = await axios.get(`${baseUrl}/api/owner/all-movies`, { withCredentials: true });
             console.log('Full Response:', res);
             console.log('Data Type:', typeof res.data);
             setMovies(res.data);   

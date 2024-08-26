@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from '../URL/baseUrl.js';
 
 
 const OwnerRoutes = ({ children }) => {
@@ -12,7 +13,7 @@ const OwnerRoutes = ({ children }) => {
     const checkOwner = async () => {
       try {
         const res = await axios.get(
-          'http://localhost:3000/api/owner/check-owner', { withCredentials: true }
+          `${baseUrl}/api/owner/check-owner`, { withCredentials: true }
         );
         const data = res.data;
         if (data.success === true) { 

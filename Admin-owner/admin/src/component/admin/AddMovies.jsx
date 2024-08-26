@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from 'date-fns';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 const movieSchema = Yup.object().shape({
   title: Yup.string().required("Enter movie title"),
@@ -42,7 +43,7 @@ export default function AddMovies({ isOpen, onClose, addMovie }) {
       formData.append('releaseDate', format(new Date(data.releaseDate), 'yyyy-MM-dd'));
       formData.append('image', data.image[0]);
 
-      const response = await axios.post('http://localhost:3000/api/admin/add-movies', formData, {
+      const response = await axios.post(`${baseUrl}/api/admin/add-movies`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

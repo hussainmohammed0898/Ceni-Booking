@@ -7,6 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { baseUrl } from '../URL/baseUrl.js';
 
 const userSchema = yup.object({
   email: yup.string().required('Please enter your email').email('Please enter a valid email'),
@@ -24,7 +25,7 @@ function Signin() {
 const onSubmit = async (data) => {
   try {
       setLoading(true);
-      const res = await axios.post('http://localhost:3000/api/user/login', data, { withCredentials: true, },);
+      const res = await axios.post(`${baseUrl}/api/user/login`, data, { withCredentials: true, },);
       toast.success(res.data.message);
       navigate("/userHome");
       setLoading(false);

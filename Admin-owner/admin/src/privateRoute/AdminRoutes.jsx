@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from '../URL/baseUrl.js';
 
 
 const AdminRoutes = ({ children }) => {
@@ -12,7 +13,7 @@ const AdminRoutes = ({ children }) => {
     const checkAdmin = async () => {
       try {
         const res = await axios.get(
-          'http://localhost:3000/api/admin/check-admin', { withCredentials: true }
+          `${baseUrl}/api/admin/check-admin`, { withCredentials: true }
         );
         const data = res.data;
         if (data.success === true) { 

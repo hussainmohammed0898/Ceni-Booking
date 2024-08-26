@@ -7,6 +7,7 @@ import axios from 'axios';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import toast from 'react-hot-toast';
+import { baseUrl } from '../URL/baseUrl.js';
 
 
 
@@ -32,7 +33,7 @@ function Signup() {
     try {
       setLoading(true);
       console.log('Signup data:', data);
-      const res =  await axios.post(' http://localhost:3000/api/user/register', data, { withCredentials: true, });
+      const res =  await axios.post( `${baseUrl}/api/user/register`, data, { withCredentials: true, });
       navigate("/login");
       setLoading(false);
       toast.success(res.data.message);

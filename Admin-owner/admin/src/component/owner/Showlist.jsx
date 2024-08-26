@@ -3,6 +3,7 @@ import axios from 'axios';
 import { format, subHours, subMinutes } from 'date-fns';
 import { toast } from 'react-hot-toast';
 import AddShowModel from './AddShowModel';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 const ShowList = () => {
     const [shows, setShows] = useState([]);
@@ -17,7 +18,7 @@ const ShowList = () => {
     useEffect(() => {
         const fetchShows = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/api/owner/get-shows', { withCredentials: true });
+                const res = await axios.get(`${baseUrl}/api/owner/get-shows`, { withCredentials: true });
                 console.log("res", res.data);
                 
                 setShows(res.data);
@@ -36,7 +37,7 @@ const ShowList = () => {
 
         const fetchTheaters = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/api/owner/select-theater', { withCredentials: true });
+                const res = await axios.get(`${baseUrl}/api/owner/select-theater`, { withCredentials: true });
                 setTheaters(res.data);
             } catch (error) {
                 console.log('Error fetching theaters:', error.message);
@@ -84,7 +85,7 @@ const ShowList = () => {
 
     const refreshShows = async () => {
         try {
-            const res = await axios.get('http://localhost:3000/api/owner/get-shows', { withCredentials: true });
+            const res = await axios.get(`${baseUrl}/api/owner/get-shows`, { withCredentials: true });
             setShows(res.data);
             setFilteredShows(res.data);
         } catch (error) {

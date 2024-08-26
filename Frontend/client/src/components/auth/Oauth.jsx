@@ -5,6 +5,7 @@ import { app } from '../../firebase';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 function Oauth() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function Oauth() {
         const result = await signInWithPopup(auth, provider);
         console.log(result);
         const token = await result.user.getIdToken();
-        const res = await axios.post('http://localhost:3000/api/user/google',{}, {
+        const res = await axios.post(`${baseUrl}/api/user/google`,{}, {
           headers: {
             Authorization: `Bearer ${token}`
           }

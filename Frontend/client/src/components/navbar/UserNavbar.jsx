@@ -4,6 +4,7 @@ import { BiSolidCameraMovie } from "react-icons/bi";
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import ToggleTheme from '../../ui/ToggleTheme';
+import { baseUrl } from '../../URL/baseUrl.js';
 
 function UserNavbar() {
     const navigate = useNavigate()
@@ -14,7 +15,7 @@ function UserNavbar() {
   ];
   const handleLogout = async () => {
     try {
-     await axios.post('http://localhost:3000/api/user/logout'," ",{  withCredentials: true });
+     await axios.post(`${baseUrl}/api/user/logout`," ",{  withCredentials: true });
       toast.success('Logged out successfully');
 
       navigate('/login', { replace: true });
