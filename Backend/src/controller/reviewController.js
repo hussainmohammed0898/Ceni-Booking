@@ -30,7 +30,7 @@ export const addReview = async (req, res) => {
             path: 'reviews',
             populate: {
               path: 'user',
-              select: 'name', // Select only the fields you need
+              select: 'name', 
             },
           });
         if (!updatedMovie) {

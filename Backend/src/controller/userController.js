@@ -82,7 +82,7 @@ export const signin = async (req, res)=>{
     
     const token = generateToken(user);
     console.log(token);
-    res.cookie("access_token", token,{httpOnly:true, sameSite:'None', secure:true});
+    res.cookie("access_token", token, {httpOnly:true,  maxAge: 1 * 24 * 60 * 60 * 1000, sameSite:'None', secure:true});
     res.status(StatusCodes.CREATED).json({message:"login successfully completed",userId:user._id});  
 
    } catch (error) {
