@@ -16,7 +16,8 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: ['https://ceni-booking-frontend.onrender.com','https://cine-booking-admin.onrender.com'],
+    origin: 
+    ['https://ceni-booking-frontend.onrender.com','https://cine-booking-admin.onrender.com'],
     credentials: true,
 
   }));

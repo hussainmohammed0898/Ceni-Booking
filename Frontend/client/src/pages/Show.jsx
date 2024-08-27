@@ -54,8 +54,11 @@ export default function Show() {
   };
 
   const formatShowTime = (timeString) => {
-    const date = new Date(`1970-01-01T${timeString}Z`); // Interpret time as UTC
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const [hour, minute] = timeString.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hour), parseInt(minute), 0);
+
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
   };
 
   return (
