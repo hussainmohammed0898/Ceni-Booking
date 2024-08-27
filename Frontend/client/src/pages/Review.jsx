@@ -14,6 +14,8 @@ const schema = yup.object().shape({
   });
 
 function Review({ isOpen, onClose, movieId, movieName }) {
+ 
+  
     const { control, handleSubmit, reset, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
       });
@@ -44,7 +46,7 @@ function Review({ isOpen, onClose, movieId, movieName }) {
   return (
     <div className={`modal ${isOpen ? 'modal-open ' : ''}`}>
     <div className="modal-box">
-      <h2 className="font-bold text-lg">Add Review : {movieName}</h2>
+      <h2 className="font-bold text-lg">Add Review : {movieName || 'Loading...'}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="py-4 text-center">
           <Controller

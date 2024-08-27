@@ -18,10 +18,14 @@ const reviewSchema = new mongoose.Schema(
             min: 1,
             max: 5
           },
-          comment: {
+          review: {
             type: String,
-            required: true
-          },
+            default : null,
+        },
+        date: {
+            type: Date,
+            default: Date.now,
+        },
     },
     {timestamps:true}
 );

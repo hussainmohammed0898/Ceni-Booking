@@ -106,7 +106,7 @@ const ViewBooking = () => {
  </div>
               <div className="card-actions justify-end">
               {booking.show?.showDate && (
-     <button onClick={() => handleOpenModal(booking.show?.movieId, booking.show?.movieName)} className="btn btn-success text-primary-content">Add Review</button>
+     <button onClick={() => handleOpenModal(booking.show?.movieId?._id, booking.show?.movieId?.title)} className="btn btn-success text-primary-content">Add Review</button>
    )}
               </div>
             </div>

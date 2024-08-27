@@ -39,18 +39,9 @@ const movieSchema = new mongoose.Schema(
             required:true
         },
         reviews: [{
-            user: {
-              type: mongoose.Schema.Types.ObjectId,
-              ref: 'User',
-              required: true
-            },
-            rating: {
-              type: Number,
-              required: true,
-              min: 1,
-              max: 5
-            },
-    }],
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review', 
+        }],
   },
     {timestamps: true}
 );

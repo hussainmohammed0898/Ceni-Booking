@@ -2,30 +2,48 @@ import Review from "../models/reviewModel.js";
 import { StatusCodes } from "http-status-codes";
 import Movie from "../models/moviesModel.js";
 
-export const addReview =async (req, res)=>{
+export const addReview = async (req, res) => {
     try {
-        const {movieId, rating, review} = req.body;
-        const userId = req.user.data;
+        console.log("Received request:", req.body);
 
-        const newReview = new Review ({
-            movieId,
-            userId,
+        const { movieId, rating, review } = req.body;
+        const userId = req.user?.data;
+
+        if (!userId) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'User not authenticated' });
+        }
+
+        const newReview = new Review({
+            movie: movieId,
+            user: userId,
             rating,
             review,
         });
-        const saveReview = await newReview.save();
-        res.status(StatusCodes.OK).json(saveReview);
-        await Movie.findById(movieId,{
-            $push: { reviews: saveReview._id }
-        });
-        
-    } catch (error) {
-        console.error('Error creating review', error);
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:'Internal server error'})
-        
-    }
 
-}
+        const savedReview = await newReview.save();
+
+        const updatedMovie = await Movie.findByIdAndUpdate(
+            movieId,
+            { $push: { reviews: savedReview._id } },
+            { new: true }
+        ).populate({
+            path: 'reviews',
+            populate: {
+              path: 'user',
+              select: 'name', // Select only the fields you need
+            },
+          });
+        if (!updatedMovie) {
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'Movie not found' });
+        }
+
+        res.status(StatusCodes.CREATED).json(savedReview);
+
+    } catch (error) {
+        console.error('Error creating review:', error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal server error' });
+    }
+};
 
 export const totalReviews = async (req, res) => {
 
