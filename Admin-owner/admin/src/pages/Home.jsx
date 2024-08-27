@@ -16,7 +16,7 @@ function Home() {
         SAFE,  SECURE, RELIABLE TICKETING. YOUR TICKET IS TO LIVE ENTERTAINMENT!
         </p>
         <Link to={'/login'}>
-        <button className="btn bg-yellow-500 text-gray-800 font-bold text-lg hover:bg-yellow-600">Book Now</button></Link>
+        <button className="btn bg-yellow-500 text-gray-800 font-bold text-lg hover:bg-yellow-600">LOGIN</button></Link>
       </div>
     </div>
   </div>
