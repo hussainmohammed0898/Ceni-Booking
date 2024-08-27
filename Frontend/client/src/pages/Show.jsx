@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useMovieTitleStore from '../zustand/store.js';
 import { baseUrl } from '../URL/baseUrl.js';
 
-
 export default function Show() {
   const [shows, setShows] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -18,10 +17,8 @@ export default function Show() {
         const formattedDate = selectedDate.toISOString().split('T')[0];
         const response = await axios.get(`${baseUrl}/api/user/show?date=${formattedDate}&movieId=${id}`, { withCredentials: true });
         console.log(response.data);
-        
 
         setShows(response.data);
-       
       } catch (error) {
         console.error('Error fetching shows:', error);
       }
@@ -42,7 +39,7 @@ export default function Show() {
       dateTabs.push(
         <button
           key={i}
-          className={`px-4 py-2  rounded-md mr-2 border-none    ${selectedDate.toDateString() === date.toDateString() ? 'bg-blue-500 text-black font-semibold hover:bg-blue-600 transition ease-out duration-150' : ' bg-slate-800 font-semibold'}`}
+          className={`px-4 py-2 rounded-md mr-2 border-none ${selectedDate.toDateString() === date.toDateString() ? 'bg-blue-500 text-black font-semibold hover:bg-blue-600 transition ease-out duration-150' : 'bg-slate-800 font-semibold'}`}
           onClick={() => handleDateChange(date)}
         >
           {date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
@@ -56,8 +53,13 @@ export default function Show() {
     navigate(`/showSeat/${showId}`);
   };
 
+  const formatShowTime = (timeString) => {
+    const date = new Date(`1970-01-01T${timeString}Z`); // Interpret time as UTC
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
   return (
-    <div className="container h-screen mx-auto  px-5 md:px-10 py-20 animate-fade-in">
+    <div className="container h-screen mx-auto px-5 md:px-10 py-20 animate-fade-in">
       <h1 className="text-3xl font-semibold mb-4">{movieTitle}</h1>
       <div className="flex mb-4 show">
         {renderDateTabs()}
@@ -69,8 +71,7 @@ export default function Show() {
           .map((show) => (
             <li key={`${show.theater}-${show.movieTitle}`} className="py-4">
               <h2 className="text-xl font-semibold mb-1">{show.theater}</h2>
-              <span className='text-sm pt-5'>{show.theaterLocation}</span>
-              <p className="text-lg mb-2"></p>
+              <span className="text-sm pt-5">{show.theaterLocation}</span>
               <div className="flex flex-wrap">
                 {show.showTimes.map(({ showTime, showId }) => (
                   <button
@@ -78,7 +79,7 @@ export default function Show() {
                     key={showId}
                     className="bg-base-200 hover:bg-base-300 text-white border-white rounded-lg w-20 h-10 mb-3 mr-1"
                   >
-                    {showTime}
+                    {formatShowTime(showTime)}
                   </button>
                 ))}
               </div>

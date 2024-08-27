@@ -67,6 +67,7 @@ export const MovieDetails = async (req, res) => {
   try {
     const movieId = req.params.id;
     const movie = await Movie.findById(movieId)
+    
     .populate({
       path: 'reviews',
       populate: {
