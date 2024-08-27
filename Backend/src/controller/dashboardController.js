@@ -30,10 +30,10 @@ export const adminDashboard = async(req, res)=>{
         const totalTheaters = await Theater.countDocuments();
 
         // Fetch total number of approved theaters
-        const approvedTheaters = await Theater.countDocuments({ status: 'approved' });
+        const approvedTheaters = await Theater.countDocuments({ approved: true});
 
         // Fetch total number of pending theaters
-        const pendingTheaters = await Theater.countDocuments({ status: 'pending' });
+        const pendingTheaters = await Theater.countDocuments({ approved: false });
 
         // Fetch total number of users
         const totalUsers = await User.countDocuments();
