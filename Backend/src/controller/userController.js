@@ -165,18 +165,15 @@ export const resetPassword = async (req, res)=>{
   
 };
 
-export const logout = (req, res)=>{
- try {
-  const token = req.cookies.token
- 
-  res.clearCookie('access_token',token,{ httpOnly: true});
-  res.status(StatusCodes.ACCEPTED).json({ message: 'Logged out successfully' });
-  
- } catch (error) {
-      console.error('Error logging out:', error);
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' });
- }
+export const logout = (req, res) => {
+  try {
+    res.clearCookie('access_token', { httpOnly: true, sameSite: 'None', secure: true });
+    res.status(StatusCodes.OK).json({ message: 'Logged out successfully' });
 
+  } catch (error) {
+    console.error('Error logging out:', error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+  }
 };
 
 export const checkUser = async (req, res) => {
