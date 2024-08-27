@@ -12,7 +12,9 @@ function ResetPassword() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${baseUrl}/api/user/reset-password/${id}/${token}`, { newPassword });
+            const response = await axios.post(`${baseUrl}/api/user/reset-password/${id}/${token}`, { newPassword },{headers: {
+              'Authorization': `Bearer ${token}`, 
+            },},{withCredentials: true});
             toast.success(response.data.message);
             navigate('/login')
 
