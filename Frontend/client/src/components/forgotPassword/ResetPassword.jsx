@@ -13,6 +13,7 @@ function ResetPassword() {
         e.preventDefault();
         try {
             const response = await axios.post(`${baseUrl}/api/user/reset-password/${id}/${token}`, { newPassword },{headers: {
+              'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`, 
             },},{withCredentials: true});
             toast.success(response.data.message);

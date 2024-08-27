@@ -18,6 +18,7 @@ app.use(cookieParser());
 app.use(cors({
     origin: 
     ['https://ceni-booking-frontend.onrender.com','https://cine-booking-admin.onrender.com'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'], 
     credentials: true,
 
