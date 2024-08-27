@@ -14,7 +14,7 @@ function PendingTheater() {
         const fetchPendingTheaters = async () => {
             try {
                 const response = await axios.get(`${baseUrl}/api/admin/not-approved-theaters`, {withCredentials:true});
-                // console.log(response.data);
+                console.log(response.data);
                 setTheaters(response.data);
                 
                 
@@ -31,9 +31,18 @@ function PendingTheater() {
     );
 
     const approveTheater = async (theaterId) => {
+      const token = localStorage.getItem('token');
         try {
-            await axios.put(`${baseUrl}/api/admin/approve-theaters/${theaterId}`,{withCredentials:true});
+          const response = await axios.put(`${baseUrl}/api/admin/approve-theaters/${theaterId}`,null,{
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+              withCredentials: true,
+          });
+          console.log(response.data);
             setTheaters(theaters.filter(theater => theater._id !== theaterId));
+          
+            
             toast.success('Theater approved successfully');
         } catch (error) {
             console.error("Error approving theater", error.message);
