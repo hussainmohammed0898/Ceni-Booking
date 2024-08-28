@@ -5,6 +5,7 @@ import nodemailer from 'nodemailer';
 import { adminGenerateToken } from "../utilities/generalToken.js";
 import serverConfig from "../config/serverConfig.js";
 import jwt from 'jsonwebtoken';
+import { ownerApi } from "../API/apiUrl.js";
 
 
 export const addOwner = async (req, res)=>{
@@ -126,7 +127,7 @@ export const forgotPassword =async (req, res)=>{
        from: serverConfig.email,
        to: owner.email,
        subject: 'Reset Password Link',
-       text: `http://localhost:5173/reset-password/${owner._id}/${token}`
+       text: `${ownerApi}/reset-password/${owner._id}/${token}`
      };
      transporter.sendMail(mailOptions, function(error, info){
        if (error) {
