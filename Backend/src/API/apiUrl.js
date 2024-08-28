@@ -1,0 +1,1 @@
+export const api = "https://ceni-booking-frontend.onrender.com"

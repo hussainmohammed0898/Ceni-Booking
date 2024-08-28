@@ -7,6 +7,7 @@ import serverConfig from "../config/serverConfig.js";
 import jwt from 'jsonwebtoken';
 import Booking from "../models/bookingModel.js";
 import Review from "../models/reviewModel.js";
+import { api } from "../API/apiUrl.js";
 
 
 export const signup = async (req, res)=>{
@@ -117,7 +118,7 @@ export const forgotPassword =async (req, res)=>{
       from: serverConfig.email,
       to: user.email,
       subject: 'Reset Password Link',
-      text: `http://localhost:5173/reset-password/${user._id}/${token}`
+      text: `${api}/reset-password/${user._id}/${token}`
     };
     transporter.sendMail(mailOptions, function(error, info){
       if (error) {
