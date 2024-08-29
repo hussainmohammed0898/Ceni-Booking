@@ -141,9 +141,9 @@ function ShowSeats() {
    
   
   return (
-    <div className="container mx-auto px-5 pt-5">
+    <div className="container mx-auto px-1 pt-3  md:px-5 md:pt-5">
     <h1 className="text-2xl font-bold text-center mb-4">Select Your Seats</h1>
-    <div className="flex justify-center items-center h-[70vh] overflow-x-auto animate-fade-in">
+    <div className="flex justify-center items-center md:h-[70vh] overflow-x-auto animate-fade-in">
     <div className="mt-5 gap-4 grid "  style={{ gridTemplateColumns: `repeat(${lastSeatNumber}, minmax(50px, 1fr))` }}>
                 {seats.map((row, rowIndex) => (
                     <div key={rowIndex} className="flex flex-row justify-center">

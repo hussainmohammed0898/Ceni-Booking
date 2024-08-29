@@ -14,13 +14,15 @@ function Oauth() {
         const provider = new GoogleAuthProvider()
         const auth = getAuth(app)
         const result = await signInWithPopup(auth, provider);
-        console.log(result);
-        const token = await result.user.getIdToken();
-        const res = await axios.post(`${baseUrl}/api/user/google`,{}, {
+        const res = await axios.post(`${baseUrl}/api/user/google`,{
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+        },{
           headers: {
-            Authorization: `Bearer ${token}`
+            'Authorization': `Bearer ${result.user.accessToken}`  // Correctly pass the token
           }
-           });
+        });
           console.log('Backend Response:', res.data);
             toast.success(res.data.message);
             navigate("/userHome");

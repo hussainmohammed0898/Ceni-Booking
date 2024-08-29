@@ -227,30 +227,56 @@ export const  totalUser = async (req, res) => {
 
 };
 
-export const google = async (req, res)=>{
-  const {name, email} = req.user;
-
- try {
-  let user = await User.findOne({ email });
-
-  if (!user) {
-    const generatedPassword = 
-      Math.random().toString(36).slice(-8) +
-      Math.random().toString(36).slice(-8);
-      const hashedPassword =await bcrypt.hash(generatedPassword, 10);
-      user = new User({ 
-       name, 
-       email, 
-       password:hashedPassword
-       });
-    await user.save();
-    return res.status(StatusCodes.CREATED).json({ message: "User registered and login successfully completed" });
-  }
-  return res.status(StatusCodes.OK).json({ message: "Login successfully completed" });
+export const google = async (req, res) => {
+  console.log(req.user);
   
- } catch (error) {
-  console.log(error);
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({message:"something went wrong"});
- }
-};
+  try {
+    if (!req.user) {
+      return res.status(StatusCodes.UNAUTHORIZED).json({ message: "User authentication failed" });
+    }
 
+    const { name, email } = req.user;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      const generatedPassword = 
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
+      user = new User({ 
+        name, 
+        email, 
+        password: hashedPassword 
+      });
+
+      await user.save();
+
+      const token = generateToken(user);
+      res.cookie("access_token", token, {
+        httpOnly: true,
+        maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+        sameSite: 'None',
+        secure: process.env.NODE_ENV === 'production',
+      });
+
+      return res.status(StatusCodes.CREATED).json({ message: "User registered and login successfully completed" });
+    }
+
+    const token = generateToken(user);
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+      sameSite: 'None',
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    return res.status(StatusCodes.OK).json({ message: "Login successfully completed" });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Something went wrong" });
+  }
+};
