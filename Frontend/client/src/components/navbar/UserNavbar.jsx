@@ -44,7 +44,7 @@ function UserNavbar() {
             ))}
       </ul>
     </div>
-    <Link to={'/'}  className="btn btn-ghost text-xl" >
+    <Link to={'/'}  className="btn btn-ghost text-lg md:text-xl" >
     <BiSolidCameraMovie className='text-yellow-600' />
     CineBooking</Link>
   </div>
@@ -58,7 +58,7 @@ function UserNavbar() {
           </ul>
   </div>
   
-  <div className="navbar-end gap-4">
+  <div className="navbar-end gap-2  md:gap-4">
   <ToggleTheme/>
   <button onClick={handleLogout} className="btn bg-yellow-500 text-gray-800 font-bold border-none hover:bg-yellow-600 ">LOGOUT</button>
   </div>
