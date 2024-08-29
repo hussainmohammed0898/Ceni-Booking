@@ -54,21 +54,15 @@ export default function Show() {
   };
 
   const formatShowTime = (timeString) => {
-    let [hour, minute] = timeString.split(':');
-    hour = parseInt(hour, 10);
-  
-    const period = hour >= 12 ? 'PM' : 'AM';
-    
-    
-    if (hour > 12) {
-      hour -= 12;
-    } else if (hour === 0) {
-      hour = 12;
-    }
-  
-    minute = minute.padStart(2, '0');
-  
-    return `${hour}:${minute} ${period}`;
+    const [hour, minute] = timeString.split(':');
+    const date = new Date();
+    date.setHours(parseInt(hour, 10));
+    date.setMinutes(parseInt(minute, 10));
+    return new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true
+    }).format(date);
   };
   
   return (
