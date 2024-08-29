@@ -54,13 +54,23 @@ export default function Show() {
   };
 
   const formatShowTime = (timeString) => {
-    const [hour, minute] = timeString.split(':');
-    const date = new Date();
-    date.setHours(parseInt(hour), parseInt(minute), 0);
-
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+    let [hour, minute] = timeString.split(':');
+    hour = parseInt(hour, 10);
+  
+    const period = hour >= 12 ? 'PM' : 'AM';
+    
+    
+    if (hour > 12) {
+      hour -= 12;
+    } else if (hour === 0) {
+      hour = 12;
+    }
+  
+    minute = minute.padStart(2, '0');
+  
+    return `${hour}:${minute} ${period}`;
   };
-
+  
   return (
     <div className="container h-screen mx-auto px-5 md:px-10 py-20 animate-fade-in">
       <h1 className="text-3xl font-semibold mb-4">{movieTitle}</h1>
