@@ -157,7 +157,11 @@ const ShowList = () => {
                         </thead>
                         <tbody>
                         {filteredShows.map((show) => {
-    const adjustedDate = new Date(show.showDate);
+    const showDateTime = new Date(show.showDate);
+    if (isNaN(showDateTime)) {
+        console.error("Invalid show date:", show.showDate);
+        return null;
+    }
     return (
         <tr key={show.id} className="border-t border-base-100">
             <td>
@@ -173,8 +177,8 @@ const ShowList = () => {
                 </div>
             </td>
             <td>{show.theaterName}</td>
-            <td>{format(adjustedDate, 'dd MMMM yyyy')}</td>
-            <td>{format(adjustedDate, 'h:mm aa')}</td>
+            <td>{format(showDateTime, 'dd MMMM yyyy')}</td>
+            <td>{format(showDateTime, 'h:mm aa')}</td>
             <td>{show.price}</td>
         </tr>
     );

@@ -53,17 +53,6 @@ export default function Show() {
     navigate(`/showSeat/${showId}`);
   };
 
-  const formatShowTime = (timeString) => {
-    const [hour, minute] = timeString.split(':');
-    const date = new Date();
-    date.setHours(parseInt(hour, 10));
-    date.setMinutes(parseInt(minute, 10));
-    return new Intl.DateTimeFormat('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true
-    }).format(date);
-  };
   
   return (
     <div className="container h-screen mx-auto px-5 md:px-10 py-20 animate-fade-in">
@@ -86,7 +75,7 @@ export default function Show() {
                     key={showId}
                     className="bg-base-200 hover:bg-base-300 text-white border-white rounded-lg w-20 h-10 mb-3 mr-1"
                   >
-                    {formatShowTime(showTime)}
+                    {showTime}
                   </button>
                 ))}
               </div>
