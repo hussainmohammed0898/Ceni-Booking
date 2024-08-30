@@ -15,7 +15,7 @@ userRouter.post("/login",signin);
 userRouter.post("/logout", logout);
 userRouter.post("/forgot-password",forgotPassword);
 userRouter.post('/reset-password/:id/:token', resetPassword);
-userRouter.post("/google",authenticateUser,google);
+userRouter.post("/google",google);
 userRouter.get("/check-user",authenticateUser,checkUser);
 userRouter.get('/movies',allMovies);
 userRouter.get('/movie-details/:id',authenticateUser,MovieDetails);

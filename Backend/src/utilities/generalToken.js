@@ -6,7 +6,7 @@ export const generateToken = (user)=>{
   if (!user || !user._id) {
     throw new Error('User object is required to generate a token');
   }
-  const token =  jwt.sign({data:user._id},serverConfig.token,{expiresIn: "1d"});
+  const token =  jwt.sign({data:user._id, email: user.email},serverConfig.token,{expiresIn: "1d"});
   return token;
 
 };

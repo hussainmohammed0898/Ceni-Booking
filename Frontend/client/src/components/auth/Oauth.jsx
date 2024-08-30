@@ -1,7 +1,7 @@
 import React from 'react'
 import { FcGoogle } from "react-icons/fc";
 import {getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { app } from '../../firebase';
+import { app } from '../../firebase.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -14,18 +14,17 @@ function Oauth() {
         const provider = new GoogleAuthProvider()
         const auth = getAuth(app)
         const result = await signInWithPopup(auth, provider);
+        console.log("result:",result);
+        
         const res = await axios.post(`${baseUrl}/api/user/google`,{
           name: result.user.displayName,
-          email: result.user.email,
-          photo: result.user.photoURL,
-        },{
-          headers: {
-            'Authorization': `Bearer ${result.user.accessToken}`  // Correctly pass the token
+          email: result.user.email,        }, { withCredentials: true });
+          console.log('Backend Response:', res);
+          if(res.data.success===true){
+            toast.success("login successfully");
+            navigate("/userHome")
           }
-        });
-          console.log('Backend Response:', res.data);
-            toast.success(res.data.message);
-            navigate("/userHome");
+           
            
       } catch (error) {
         console.error('Error during Google authentication', error);

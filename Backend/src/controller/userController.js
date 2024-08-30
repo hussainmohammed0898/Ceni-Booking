@@ -228,32 +228,16 @@ export const  totalUser = async (req, res) => {
 };
 
 export const google = async (req, res) => {
-  console.log(req.user);
-  
-  try {
-    if (!req.user) {
-      return res.status(StatusCodes.UNAUTHORIZED).json({ message: "User authentication failed" });
-    }
+try{
+    const { name, email } = req.body;
 
-    const { name, email } = req.user;
+    console.log("name",name);
+    console.log("email",email);
+    
+
 
     let user = await User.findOne({ email });
-
-    if (!user) {
-      const generatedPassword = 
-        Math.random().toString(36).slice(-8) +
-        Math.random().toString(36).slice(-8);
-
-      const hashedPassword = await bcrypt.hash(generatedPassword, 10);
-
-      user = new User({ 
-        name, 
-        email, 
-        password: hashedPassword 
-      });
-
-      await user.save();
-
+    if(user){
       const token = generateToken(user);
       res.cookie("access_token", token, {
         httpOnly: true,
@@ -262,18 +246,43 @@ export const google = async (req, res) => {
         secure: process.env.NODE_ENV === 'production',
       });
 
-      return res.status(StatusCodes.CREATED).json({ message: "User registered and login successfully completed" });
-    }
+    }else{
+      const generatedPassword = 
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
 
+      const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
+     const newUser = new User({ 
+        name:name,
+        email,
+        password: hashedPassword 
+      });
+
+      await newUser.save();
+
+      const token = generateToken(newUser);
+      res.cookie("access_token", token, {
+        httpOnly: true,
+        maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
+        sameSite: 'None',
+        secure: true,
+      });
+
+      return res.status(StatusCodes.CREATED).json({ message: "User registered and login successfully completed" });
+
+    }
     const token = generateToken(user);
+    console.log("token:",token);
+    
     res.cookie("access_token", token, {
       httpOnly: true,
       maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
       sameSite: 'None',
-      secure: process.env.NODE_ENV === 'production',
+      secure: true
     });
 
-    return res.status(StatusCodes.OK).json({ message: "Login successfully completed" });
+    return res.status(StatusCodes.OK).json({ message: "Login successfully completed", success:true});
 
   } catch (error) {
     console.error(error);
