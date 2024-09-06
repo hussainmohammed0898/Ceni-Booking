@@ -13,8 +13,12 @@ import { baseUrl } from '../URL/baseUrl.js';
 
 const userSchema = yup.object({
   name: yup.string().required('Please enter your name'),
-  email: yup.string().required('Please enter your email').email('Please enter a valid email'),
-  password: yup.string().required('Please enter your password').min(8, 'Password must be at least 8 characters long'),
+  email: yup.string().required('Please enter your email').email('Please enter a valid email')
+  .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/, 'Email must be in uppercase letters only'),
+  password: yup.string().required('Please enter your password').min(8, 'Password must be at least 8 characters long').matches(
+    /^(?=.*[0-9])(?=.*[!@#$%^&*])/,
+    'Password must contain at least one number and one special character'
+  ),
   confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match')
 
 });
@@ -48,6 +52,9 @@ function Signup() {
       setLoading(false);
     }
   };
+
+  
+
 
 
  
