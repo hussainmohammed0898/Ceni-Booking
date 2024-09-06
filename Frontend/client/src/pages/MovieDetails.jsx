@@ -41,11 +41,11 @@ export default function MovieDetails() {
   const calculateAverageRating = (reviews) => {
     if (!reviews || reviews.length === 0) return 0;
     const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-    return totalRating / reviews.length;
+    return (totalRating / reviews.length).toFixed(1); 
   };
 
   const avgRating = movie && movie.reviews ? calculateAverageRating(movie.reviews) : 0;
-  const yellowStars = Math.floor(avgRating);
+  const yellowStars = Math.floor(avgRating); 
 
   return (
     <div className='container min-h-screen h-full lg:h-full mx-auto pt-20'>
@@ -70,11 +70,12 @@ export default function MovieDetails() {
                     type="radio"
                     name="avgRating"
                     disabled
-                    className={`mask mask-star-2 ${index < yellowStars ? 'bg-warning' : ''} ${index < yellowStars ? 'checked' : ''}`}
+                    className={`mask mask-star-2 ${index < yellowStars ? 'bg-warning' : ''} `}
                   />
                 ))}
-                <span className='text-lg'>({movie?.reviews?.length || 0})</span>
+                  <span className='text-lg ml-2'>({avgRating})</span>
               </div>
+              <span className='text-lg'>({movie?.reviews?.length || 0})</span>
             </div>
             <div className="text-right lg:text-left pt-5">
               <Link to={`/shows/${movie?._id}`}>

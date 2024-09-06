@@ -14,7 +14,7 @@ import { baseUrl } from '../URL/baseUrl.js';
 const userSchema = yup.object({
   name: yup.string().required('Please enter your name'),
   email: yup.string().required('Please enter your email').email('Please enter a valid email')
-  .matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/, 'Email must be in uppercase letters only'),
+  .matches(/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/, 'Email must be in lowercase letters only'),
   password: yup.string().required('Please enter your password').min(8, 'Password must be at least 8 characters long').matches(
     /^(?=.*[0-9])(?=.*[!@#$%^&*])/,
     'Password must contain at least one number and one special character'

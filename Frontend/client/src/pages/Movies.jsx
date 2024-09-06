@@ -14,11 +14,13 @@ function Movies() {
   const [loading, setLoading] = useState(true);
   const [nowPlayingDisplayCount, setNowPlayingDisplayCount] = useState(4);
   const [upcomingDisplayCount, setUpcomingDisplayCount] = useState(4);
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${baseUrl}/api/user/movies`, { withCredentials: true });
+        console.log("res", response);
+        
         const currentDate = new Date();
 
         const nowPlaying = response.data.filter(movie => new Date(movie.releaseDate) <= currentDate);
