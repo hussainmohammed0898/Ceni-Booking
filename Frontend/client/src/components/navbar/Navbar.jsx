@@ -51,7 +51,7 @@ function Navbar() {
           </ul>
   </div>
   <div className="navbar-end">
-  <Link to="/sign-up" className="btn bg-yellow-500 text-gray-800 font-bold border-none hover:bg-yellow-600 ">SIGNUP</Link>
+  <Link to="/sign-up" className="btn bg-yellow-500 text-gray-800 font-bold border-none hover:bg-yellow-600">SIGNUP</Link>
   </div>
 </div>
   

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { baseUrl } from '../../URL/baseUrl.js';
+import { Link } from 'react-router-dom';
 
 function ForgotPassword() {
     const [email, setEmail] = useState();
@@ -37,11 +38,16 @@ function ForgotPassword() {
       <div className='w-full md:w-67% lg:w-[40%] lg:ml-20'>
         <form onSubmit={handleSubmit}>
           <input 
-          className='mb-6 w-full px-4 py-2 text-xl text-gray-300  bg-slate-900 input input-bordered input-primary w-100  rounded' 
+          className=' w-full px-4 py-2 text-xl text-gray-300  bg-slate-900 input input-bordered input-primary w-100  rounded' 
           type="email" 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder='Email address'/>
+          <p className='mb-4'>Already have an account?
+              <Link className='text-red-600 hover:text-red-700 transition duration-200 ease-in-out ml-1'  to='/login'>
+              Sign-in
+              </Link>
+            </p>
           <button className='w-full bg-blue-600 text-white px-7 py-3 text-sm font-medium uppercase rounded shadow-md hover:bg-blue-700 transition duration-150 ease-in-out hover:shadow-lg active:bg-blue-800' 
         type='submit'>Forgot Password</button>
        
