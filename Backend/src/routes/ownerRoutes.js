@@ -21,7 +21,8 @@ ownerRoute.get('/get-shows', authenticateOwner,getShowByOwner)
 ownerRoute.get('/all-movies',authenticateOwner,allMovies);
 ownerRoute.get('/total-movies',authenticateOwner,totalMovies);
 ownerRoute.get('/my-theaters', authenticateOwner, TheaterByOwner)
-ownerRoute.get('/dashboardStats',authenticateOwner, getDashboardStats)
+ownerRoute.get('/dashboardStats',authenticateOwner, getDashboardStats);
+
 
 
 export default ownerRoute

@@ -6,15 +6,23 @@ import Modal from '../admin/ConfirmModel';
 import { BsFillTrash3Fill } from "react-icons/bs";
 import AddEditModel from './AddMovies';
 import { baseUrl } from '../../URL/baseUrl.js';
+import {  useNavigate } from 'react-router-dom';
+import MovieDetails from './MovieDetails.jsx';
+
 
 export default function MoviesList() {
+  const navigate = useNavigate();
   const [movies, setMovies] = useState([]);
   const [deleteMovieId, setDeleteMovieId] = useState(null);
   const [movieModel, setMovieModel] = useState(false);
+  const [detailsModel, setDetailsModel] = useState(false);
+  const [selectedMovieId, setSelectedMovieId] = useState(null);
   useEffect(() => {
     const fetchMovies = async () => {
       try {
         const res = await axios.get(`${baseUrl}/api/admin/all-movies`, { withCredentials: true });
+        console.log("response:",res.data);
+        
         setMovies(res.data);
       } catch (error) {
         console.log('Error fetching movies:', error.message);
@@ -59,6 +67,17 @@ export default function MoviesList() {
   const addMovie = (newMovie) => {
     setMovies((prevMovies) => [...prevMovies, newMovie]);
   };
+  const handleViewDetails = (movieId) => {
+    setSelectedMovieId(movieId);
+    setDetailsModel(true);
+  };
+
+  const handleCloseDetails = () => {
+    setDetailsModel(false);
+    setSelectedMovieId(null);
+  };
+  
+
 
   return (
     <div className="overflow-x-auto h-screen">
@@ -84,7 +103,7 @@ export default function MoviesList() {
                     <div className="flex items-center gap-3">
                       <div className="avatar">
                         <div className="mask mask-squircle w-12 h-12">
-                          <img src={movie.image} alt={movie.title} className="object-cover" />
+                          <img src={movie.image} alt={movie.title} className="object-cover cursor-pointer" onClick={() => handleViewDetails(movie._id)} />
                         </div>
                       </div>
                       <div>
@@ -118,6 +137,11 @@ export default function MoviesList() {
         isOpen={movieModel}
         onClose={handleCloseModal}
         addMovie={addMovie}
+      />
+      <MovieDetails
+        isOpen={detailsModel}
+        onClose={handleCloseDetails}
+        movieId={selectedMovieId}
       />
       
     </div>

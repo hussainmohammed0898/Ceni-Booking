@@ -18,6 +18,10 @@ import OwnerLayout from "../layout/OwnerLayout";
 import Home from "../pages/Home";
 import AdminRoutes from "../privateRoute/AdminRoutes";
 import OwnerRoutes from "../privateRoute/OwnerRoute";
+import MovieDetails from "../component/admin/MovieDetails";
+
+
+
 
 export const routes = [
     {
@@ -68,6 +72,10 @@ export const routes = [
             {
                 path:"/users",
                 element:<AdminRoutes><UserList/></AdminRoutes>
+            },
+            {
+                path:'movie-details/:id',
+                elements:<AdminRoutes><MovieDetails/></AdminRoutes>
             }
         ]
     },
@@ -93,7 +101,10 @@ export const routes = [
             {
                 path: '/shows',
                 element:<OwnerRoutes><ShowList/></OwnerRoutes>
-            }
+            },
+           
+            
+            
         ]
     }
 ]

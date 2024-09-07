@@ -51,8 +51,6 @@ export const addMovies = async(req, res)=>{
 };
 
 export const allMovies = async (req, res) => {
-  console.log("hitting");
-  
   try {
       const movies = await Movie.find();
       res.status(StatusCodes.CREATED).json(movies);
@@ -64,6 +62,8 @@ export const allMovies = async (req, res) => {
 };
 
 export const MovieDetails = async (req, res) => {
+  console.log("hittingsss");
+  
   try {
     const movieId = req.params.id;
     const movie = await Movie.findById(movieId)

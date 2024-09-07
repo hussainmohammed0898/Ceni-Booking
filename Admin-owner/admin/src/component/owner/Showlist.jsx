@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { format, subHours, subMinutes } from 'date-fns';
+import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
 import AddShowModel from './AddShowModel';
 import { baseUrl } from '../../URL/baseUrl.js';
+import { Link } from 'react-router-dom';
 
 const ShowList = () => {
     const [shows, setShows] = useState([]);
@@ -19,19 +20,15 @@ const ShowList = () => {
         const fetchShows = async () => {
             try {
                 const res = await axios.get(`${baseUrl}/api/owner/get-shows`, { withCredentials: true });
-                console.log("res", res.data);
-                
                 setShows(res.data);
                 setFilteredShows(res.data);
             } catch (error) {
                 console.log('Error fetching shows:', error.message);
-               if(error.response.status === 404) {
-                   toast.error("No theaters found for this owner")
-               }else{
-                   toast.error('Failed to fetch shows');
-                   
-               }
-                
+                if (error.response && error.response.status === 404) {
+                    toast.error("No theaters found for this owner");
+                } else {
+                    toast.error('Failed to fetch shows');
+                }
             }
         };
 
@@ -51,25 +48,17 @@ const ShowList = () => {
 
     const handleFilter = () => {
         let filtered = shows;
-    
         if (theaterFilter) {
             filtered = filtered.filter(show => show.theaterName.toLowerCase().includes(theaterFilter.toLowerCase()));
         }
-    
         if (dateFilter) {
-            filtered = filtered.filter(show => {
-                const adjustedDate = new Date(show.showDate);
-                return format(adjustedDate, 'yyyy-MM-dd') === dateFilter;
-            });
+            filtered = filtered.filter(show => format(new Date(show.showDate), 'yyyy-MM-dd') === dateFilter);
         }
-    
         if (movieSearch) {
             filtered = filtered.filter(show => show.movieName.toLowerCase().includes(movieSearch.toLowerCase()));
         }
-    
         setFilteredShows(filtered);
     };
-    
 
     useEffect(() => {
         handleFilter();
@@ -86,6 +75,10 @@ const ShowList = () => {
     const refreshShows = async () => {
         try {
             const res = await axios.get(`${baseUrl}/api/owner/get-shows`, { withCredentials: true });
+            console.log("responds:", res.data);
+            
+
+
             setShows(res.data);
             setFilteredShows(res.data);
         } catch (error) {
@@ -93,17 +86,18 @@ const ShowList = () => {
             toast.error('Failed to refresh shows');
         }
     };
+
     const clearFilters = () => {
-      setTheaterFilter('');
-      setDateFilter('');
-      setMovieSearch('');
-      setFilteredShows(shows);
-  };
+        setTheaterFilter('');
+        setDateFilter('');
+        setMovieSearch('');
+        setFilteredShows(shows);
+    };
 
     return (
         <div className="container mx-auto my-4">
-            <div className="card w-full p-1 shadow-xl  animate-fade-in-down">
-                <div className="card-title flex  items-center justify-between">
+            <div className="card w-full p-1 shadow-xl animate-fade-in-down">
+                <div className="card-title flex items-center justify-between">
                     <h2 className="text-xl font-semibold">Shows</h2>
                     <div className="flex items-center gap-2">
                         <input
@@ -121,7 +115,7 @@ const ShowList = () => {
                     </div>
                 </div>
                 {showFilterOptions && (
-                    <div className="my-4 flex  gap-2 ">
+                    <div className="my-4 flex gap-2">
                         <select
                             className="select select-bordered select-sm"
                             value={theaterFilter}
@@ -138,7 +132,7 @@ const ShowList = () => {
                             value={dateFilter}
                             onChange={e => setDateFilter(e.target.value)}
                         />
-                        <button className="btn btn-outline btn-sm " onClick={clearFilters} >
+                        <button className="btn btn-outline btn-sm" onClick={clearFilters}>
                             Clear Filter
                         </button>
                     </div>
@@ -156,35 +150,33 @@ const ShowList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                        {filteredShows.map((show) => {
-    const showDateTime = new Date(show.showDate);
-    if (isNaN(showDateTime)) {
-        console.error("Invalid show date:", show.showDate);
-        return null;
-    }
-    return (
-        <tr key={show.id} className="border-t border-base-100">
-            <td>
-                <div className="flex items-center gap-3">
-                    <div className="avatar">
-                        <div className="mask mask-squircle w-12 h-12">
-                            <img src={show.movieImage} alt={show.movieName} className="object-cover" />
-                        </div>
-                    </div>
-                    <div>
-                        <p className="font-bold">{show.movieName}</p>
-                    </div>
-                </div>
-            </td>
-            <td>{show.theaterName}</td>
-            <td>{format(showDateTime, 'dd MMMM yyyy')}</td>
-            <td>{format(showDateTime, 'h:mm aa')}</td>
-            <td>{show.price}</td>
-        </tr>
-    );
-})}
-                       
-                            
+                            {filteredShows.map((show) => {
+                                const showDateTime = new Date(show.showDate);
+                                if (isNaN(showDateTime)) {
+                                    console.error("Invalid show date:", show.showDate);
+                                    return null;
+                                }
+                                return (
+                                    <tr key={show.id} className="border-t border-base-100">
+                                        <td>
+                                            <div className="flex items-center gap-3">
+                                                <div className="avatar">
+                                                    <div className="mask mask-squircle w-12 h-12">
+                                                        <img src={show.movieImage} alt={show.movieName} className="object-cover" />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p className="font-bold">{show.movieName}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{show.theaterName}</td>
+                                        <td>{format(showDateTime, 'dd MMMM yyyy')}</td>
+                                        <td>{format(showDateTime, 'hh:mm aa')}</td>
+                                        <td>{show.price}</td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
