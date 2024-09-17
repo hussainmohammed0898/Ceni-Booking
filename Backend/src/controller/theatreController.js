@@ -1,5 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import Theater from "../models/theaterModel.js";
+import nodemailer from 'nodemailer';
+import serverConfig from "../config/serverConfig.js";
 
 export const AddTheater = async (req, res) => {
     const ownerId = req.owner.data;
@@ -33,10 +35,37 @@ export const approveTheater = async (req, res) => {
         const theaterId = req.params.id;
         console.log("id:",theaterId);
 
-        const theater = await Theater.findByIdAndUpdate(theaterId, { approved: true }, { new: true });
+        const theater = await Theater.findByIdAndUpdate(theaterId, { approved: true }, { new: true }).populate('owner', 'email');;
+        console.log("theater", theater);
+        
         
         if (!theater) {
             return res.status(StatusCodes.NOT_FOUND).json({ message: "Theater not found" });
+        }
+
+        if (theater.owner && theater.owner.email) {
+            var transporter = nodemailer.createTransport({
+                service: serverConfig.service,
+                auth: {
+                  user: serverConfig.email,
+                  pass: serverConfig.password
+                }
+              });
+              
+              var mailOptions = {
+                from: serverConfig.email,
+                to: theater.owner.email,
+                subject: 'Theater Approved',
+                text: `Dear Theater Owner,\n\nYour theater has been approved by the admin.\n\nBest regards,\nYour Team`,
+              };
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  return res.status(StatusCodes.OK).json({Status: "Success"})
+                }
+              });
+
         }
 
         

@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 
 function authenticateAdmin(req, res, next) {
   const token = req.cookies.access_token;
-  console.log("token done:", token);
+  
   
 
   if(!token){
@@ -18,11 +18,7 @@ function authenticateAdmin(req, res, next) {
       return res.status(StatusCodes.FORBIDDEN).json({ message: "Invalid or expired token" });
     }
 
-    req.owner = owner;
-
-    console.log("role:" ,req.owner);
-    
-    
+    req.owner = owner;  
     if (req.owner.role !== "admin") {
       return res.send("not authenticated");
     }

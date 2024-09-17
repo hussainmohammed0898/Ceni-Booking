@@ -67,14 +67,12 @@ export const ownerLogin =async(req, res)=>{
     
     const comparePassword = await bcrypt.compare(password, ownerExist.password);
     
-    console.log(comparePassword);
-
     if(!comparePassword){
         return res.status(StatusCodes.NOT_ACCEPTABLE).json({message:"password incorrect"});
     };
 
     const token = adminGenerateToken(ownerExist);
-    console.log(token);
+    
     
    
     res.cookie('access_token',token,{httpOnly:true,  maxAge: 1 * 24 * 60 * 60 * 1000, sameSite:'None', secure:true})
